@@ -2,6 +2,7 @@
 import Link from 'next/link'
 import { Logo } from '@/components/logo'
 import { X } from 'lucide-react'
+import { ModeToggle} from "@/components/menu-toggle"
 import { Button } from '@/components/ui/button'
 import React from 'react'
 
@@ -97,7 +98,17 @@ export const HeroHeader = () => {
                                 </ul>
                             </div>
                             <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit">
-                                <Button
+                              <Button
+                                  variant="outline"
+                                  size="sm"
+                                  nativeButton={false}
+                                  render={
+                                      <Link href="#">
+                                        <ModeToggle />
+                                      </Link>
+                                  }
+                              />
+                              <Button
                                     variant="outline"
                                     size="sm"
                                     nativeButton={false}
