@@ -1,6 +1,7 @@
 "use client"
 
 import { useRouter } from "next/navigation"
+import { LogOut } from "lucide-react"
 import { toast } from "sonner"
 
 import { authClient } from "@/lib/auth-client"
@@ -23,7 +24,8 @@ export const Logout = () => {
   }
 
   return (
-    <Button variant="outline" onClick={handleLogout}>
+    <Button variant="outline" onClick={handleLogout} className="w-full">
+      <LogOut />
       Logout
     </Button>
   )

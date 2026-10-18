@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, boolean, index } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, boolean, index, jsonb } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
 export const user = pgTable("user", {
@@ -89,5 +89,38 @@ export const accountRelations = relations(account, ({ one }) => ({
   user: one(user, {
     fields: [account.userId],
     references: [user.id],
+  }),
+}));
+export const notebooks = pgTable("notebooks", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull(),
+  userId:text('user_id').notNull().references(()=> user.id, {onDelete:'cascade'}),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at")
+});
+
+export const notebookRelations = relations(notebooks, ({ many, one }) => ({
+  notes: many(notes),
+    user: one(user, {
+     fields: [notebooks.userId],
+  references: [user.id],
+      })
+}));
+
+export type Notebook = typeof notebooks.$inferSelect;
+
+export const notes = pgTable("notes", {
+  id: text("id").primaryKey(),
+  title: text("name").notNull(),
+  content: jsonb('content').notNull(),
+  notebookId:text('notrbook_id').notNull().references(()=> notebooks.id, {onDelete:'cascade'}),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at")
+});
+
+export const noteRelations = relations(notes, ({ one }) => ({
+  notebook: one(notebooks, {
+    fields: [notes.notebookId],
+    references: [notebooks.id],
   }),
 }));
