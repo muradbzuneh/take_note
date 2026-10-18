@@ -1,6 +1,6 @@
 import type { SVGProps } from 'react'
 
-const Google = (props: SVGProps) => (
+const Google = (props: SVGProps<SVGSVGElement>) => (
     <svg
         {...props}
         xmlnsXlink="http://www.w3.org/1999/xlink"

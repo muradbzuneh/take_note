@@ -1,6 +1,6 @@
 import type { SVGProps } from 'react'
 
-const Trustpilot = (props: SVGProps) => (
+const Trustpilot = (props: SVGProps<SVGSVGElement>) => (
     <svg
         width="144"
         height="137"

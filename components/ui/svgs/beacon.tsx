@@ -1,5 +1,5 @@
 import type { SVGProps } from 'react'
-export const Beacon = (props: SVGProps) => (
+export const Beacon = (props: SVGProps<SVGSVGElement>) => (
     <svg
         viewBox="0 0 93 20"
         xmlns="http://www.w3.org/2000/svg"

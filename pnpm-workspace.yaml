@@ -1,2 +1,12 @@
 allowBuilds:
+  esbuild: set this to true or false
   unrs-resolver: false
+minimumReleaseAgeExclude:
+  - '@better-auth/core@1.7.10'
+  - '@better-auth/drizzle-adapter@1.7.10'
+  - '@better-auth/kysely-adapter@1.7.10'
+  - '@better-auth/memory-adapter@1.7.10'
+  - '@better-auth/mongo-adapter@1.7.10'
+  - '@better-auth/prisma-adapter@1.7.10'
+  - '@better-auth/telemetry@1.7.10'
+  - better-auth@1.7.10

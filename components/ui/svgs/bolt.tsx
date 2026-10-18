@@ -1,5 +1,5 @@
 import type { SVGProps } from 'react'
-export const Bolt = (props: SVGProps) => (
+export const Bolt = (props: SVGProps<SVGSVGElement>) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 45.65 160 68.7"

@@ -113,7 +113,7 @@ export const HeroHeader = () => {
                                     size="sm"
                                     nativeButton={false}
                                     render={
-                                        <Link href="#">
+                                        <Link href="/login">
                                             <span>Login</span>
                                         </Link>
                                     }
@@ -122,7 +122,7 @@ export const HeroHeader = () => {
                                     size="sm"
                                     nativeButton={false}
                                     render={
-                                        <Link href="#">
+                                        <Link href="/signup">
                                             <span>Sign Up</span>
                                         </Link>
                                     }

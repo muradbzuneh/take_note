@@ -1,6 +1,6 @@
 import type { SVGProps } from 'react'
 
-const G2 = (props: SVGProps) => (
+const G2 = (props: SVGProps<SVGSVGElement>) => (
     <svg
         width="50"
         height="50"

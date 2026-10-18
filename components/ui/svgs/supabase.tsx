@@ -1,6 +1,6 @@
 import type { SVGProps } from 'react'
 
-const Supabase = (props: SVGProps) => (
+const Supabase = (props: SVGProps<SVGSVGElement>) => (
     <svg
         {...props}
         viewBox="0 0 109 113"
@@ -52,7 +52,7 @@ const Supabase = (props: SVGProps) => (
     </svg>
 )
 
-const SupabaseFull = (props: SVGProps) => (
+const SupabaseFull = (props: SVGProps<SVGSVGElement>) => (
     <svg
         {...props}
         viewBox="0 0 581 113"

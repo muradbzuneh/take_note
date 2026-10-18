@@ -1,6 +1,6 @@
 import type { SVGProps } from 'react'
 
-export const Hulu = (props: SVGProps) => (
+export const Hulu = (props: SVGProps<SVGSVGElement>) => (
     <svg
         width="1em"
         height="1em"

@@ -1,6 +1,6 @@
 import type { SVGProps } from 'react'
 
-export const Vercel = (props: SVGProps) => (
+export const Vercel = (props: SVGProps<SVGSVGElement>) => (
     <svg
         viewBox="0 0 256 222"
         width="1em"
@@ -16,7 +16,7 @@ export const Vercel = (props: SVGProps) => (
     </svg>
 )
 
-export const VercelFull = (props: SVGProps) => (
+export const VercelFull = (props: SVGProps<SVGSVGElement>) => (
     <svg
         aria-label="Vercel logotype"
         height="1em"
