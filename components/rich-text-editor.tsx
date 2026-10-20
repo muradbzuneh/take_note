@@ -1,15 +1,7 @@
 "use client";
 
-import {
-  useEditor,
-  EditorContent,
-  useEditorState,
-  type JSONContent,
-} from "@tiptap/react";
+import { useEditor, EditorContent, type JSONContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import Document from "@tiptap/extension-document";
-import Paragraph from "@tiptap/extension-paragraph";
-import Text from "@tiptap/extension-text";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -24,384 +16,304 @@ import {
   Italic,
   Strikethrough,
   Code,
-  Underline,
-  Link,
   List,
   ListOrdered,
-  AlignLeft,
-  AlignCenter,
-  AlignRight,
-  AlignJustify,
-  Plus,
+  Quote,
+  SquareCode,
+  Minus,
   ChevronDown,
-  Superscript,
-  Subscript,
 } from "lucide-react";
-import { updateNote } from "@/server/notes";
+import { useEffect, useState } from "react";
 
 interface RichTextEditorProps {
-  content?: JSONContent[];
-  noteId?: string;
+  initialContent?: JSONContent | Record<string, unknown>;
+  onChange?: (content: JSONContent) => void;
+  editable?: boolean;
 }
 
-const RichTextEditor = ({ content, noteId }: RichTextEditorProps) => {
+export function RichTextEditor({
+  initialContent,
+  onChange,
+  editable = true,
+}: RichTextEditorProps) {
+  // Track active states cleanly on editor transactions
+  const [, setTick] = useState(0);
+
   const editor = useEditor({
-    extensions: [StarterKit, Document, Paragraph, Text],
-    immediatelyRender: false,
-    autofocus: true,
-    editable: true,
-    injectCSS: false,
-    onUpdate: ({ editor }) => {
-      if (noteId) {
-        const content = editor.getJSON();
-        updateNote(noteId, { content });
-      }
-    },
-    content: content ?? {
-      type: "doc",
-      content: [
-        {
-          type: "heading",
-          attrs: { level: 1 },
-          content: [{ type: "text", text: "Getting started" }],
+    extensions: [
+      StarterKit.configure({
+        heading: {
+          levels: [1, 2, 3],
         },
-        {
-          type: "paragraph",
-          content: [
-            { type: "text", text: "Welcome to the " },
-            {
-              type: "text",
-              text: "Simple Editor",
-              marks: [{ type: "italic" }],
-            },
-            { type: "text", text: " template! This template integrates " },
-            { type: "text", text: "open source", marks: [{ type: "bold" }] },
-            {
-              type: "text",
-              text: " UI components and Tiptap extensions licensed under ",
-            },
-            { type: "text", text: "MIT", marks: [{ type: "bold" }] },
-            { type: "text", text: "." },
-          ],
-        },
-        {
-          type: "paragraph",
-          content: [
-            { type: "text", text: "Integrate it by following the " },
-            {
-              type: "text",
-              text: "Tiptap UI Components docs",
-              marks: [{ type: "code" }],
-            },
-            { type: "text", text: " or using our CLI tool." },
-          ],
-        },
-        {
-          type: "codeBlock",
-          content: [{ type: "text", text: "npx @tiptap/cli init" }],
-        },
-        {
-          type: "heading",
-          attrs: { level: 2 },
-          content: [{ type: "text", text: "Features" }],
-        },
-        {
-          type: "blockquote",
+      }),
+    ],
+    content: initialContent && Object.keys(initialContent).length > 0
+      ? initialContent
+      : {
+          type: "doc",
           content: [
             {
               type: "paragraph",
-              content: [
-                {
-                  type: "text",
-                  text: "A fully responsive rich text editor with built-in support for common formatting and layout tools. Type markdown ",
-                },
-                { type: "text", text: "**", marks: [{ type: "bold" }] },
-                { type: "text", text: " or use keyboard shortcuts " },
-                { type: "text", text: "⌘+B", marks: [{ type: "code" }] },
-                { type: "text", text: " for most all common markdown marks." },
-              ],
             },
           ],
         },
-      ],
+    immediatelyRender: false,
+    editable,
+    autofocus: "end",
+    editorProps: {
+      attributes: {
+        class: "tiptap ProseMirror focus:outline-none p-6 min-h-[400px]",
+      },
+    },
+    onUpdate: ({ editor }) => {
+      if (onChange) {
+        onChange(editor.getJSON());
+      }
+    },
+    onTransaction: () => {
+      setTick((t) => t + 1);
     },
   });
 
-  const editorState = useEditorState({
-    editor,
-    selector: (ctx) => {
-      if (!ctx.editor) return {};
-      return {
-        isBold: ctx.editor?.isActive("bold"),
-        canBold: ctx.editor?.can().chain().focus().toggleBold().run(),
-        isItalic: ctx.editor?.isActive("italic"),
-        canItalic: ctx.editor?.can().chain().focus().toggleItalic().run(),
-        isStrike: ctx.editor?.isActive("strike"),
-        canStrike: ctx.editor?.can().chain().focus().toggleStrike().run(),
-        isCode: ctx.editor?.isActive("code"),
-        canCode: ctx.editor?.can().chain().focus().toggleCode().run(),
-        isParagraph: ctx.editor?.isActive("paragraph"),
-        isHeading1: ctx.editor?.isActive("heading", { level: 1 }),
-        isHeading2: ctx.editor?.isActive("heading", { level: 2 }),
-        isHeading3: ctx.editor?.isActive("heading", { level: 3 }),
-        isBulletList: ctx.editor?.isActive("bulletList"),
-        isOrderedList: ctx.editor?.isActive("orderedList"),
-        isCodeBlock: ctx.editor?.isActive("codeBlock"),
-        isBlockquote: ctx.editor?.isActive("blockquote"),
-        canUndo: ctx.editor?.can().chain().focus().undo().run(),
-        canRedo: ctx.editor?.can().chain().focus().redo().run(),
-      };
-    },
-  });
+  useEffect(() => {
+    if (editor && editable !== editor.isEditable) {
+      editor.setEditable(editable);
+    }
+  }, [editor, editable]);
 
-  const getActiveHeading = () => {
-    if (editorState?.isHeading1) return "H1";
-    if (editorState?.isHeading2) return "H2";
-    if (editorState?.isHeading3) return "H3";
-    return "H1";
+  if (!editor) {
+    return (
+      <div className="w-full rounded-xl border bg-card p-6 min-h-[400px] flex items-center justify-center text-muted-foreground text-sm">
+        Loading editor...
+      </div>
+    );
+  }
+
+  const getHeadingLabel = () => {
+    if (editor.isActive("heading", { level: 1 })) return "Heading 1";
+    if (editor.isActive("heading", { level: 2 })) return "Heading 2";
+    if (editor.isActive("heading", { level: 3 })) return "Heading 3";
+    return "Paragraph";
   };
 
   return (
-    <div className="w-full max-w-7xl bg-card text-card-foreground rounded-lg overflow-hidden border">
-      {/* Toolbar */}
-      <div className="flex items-center gap-1 p-2 bg-muted/50 border-b">
-        {/* Undo/Redo */}
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => editor?.chain().focus().undo().run()}
-          disabled={!editorState?.canUndo}
-          className="size-8 p-0 text-muted-foreground hover:text-foreground hover:bg-accent"
-        >
-          <Undo className="h-4 w-4" />
-        </Button>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => editor?.chain().focus().redo().run()}
-          disabled={!editorState?.canRedo}
-          className="size-8 p-0 text-muted-foreground hover:text-foreground hover:bg-accent"
-        >
-          <Redo className="h-4 w-4" />
-        </Button>
+    <div className="w-full rounded-xl border bg-card text-card-foreground shadow-xs overflow-hidden">
+      {/* Editor Toolbar */}
+      <div className="flex flex-wrap items-center gap-1 p-2 bg-muted/40 border-b select-none">
+        {/* Undo / Redo */}
+        <div className="flex items-center gap-0.5">
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={() => editor.chain().focus().undo().run()}
+            disabled={!editor.can().undo()}
+            className="size-8 p-0"
+            title="Undo (Ctrl+Z)"
+          >
+            <Undo className="size-4" />
+          </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={() => editor.chain().focus().redo().run()}
+            disabled={!editor.can().redo()}
+            className="size-8 p-0"
+            title="Redo (Ctrl+Shift+Z)"
+          >
+            <Redo className="size-4" />
+          </Button>
+        </div>
 
-        <div className="w-px h-6 bg-border mx-1" />
+        <div className="w-px h-5 bg-border mx-1" />
 
         {/* Heading Dropdown */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
+              type="button"
               variant="ghost"
               size="sm"
-              className="h-8 px-2 text-muted-foreground hover:text-foreground hover:bg-accent gap-1"
+              className="h-8 px-2.5 text-xs font-medium gap-1.5"
             >
-              {getActiveHeading()}
-              <ChevronDown className="h-3 w-3" />
+              <span>{getHeadingLabel()}</span>
+              <ChevronDown className="size-3 opacity-60" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="bg-popover border">
+          <DropdownMenuContent align="start" className="w-36">
+            <DropdownMenuItem
+              onClick={() => editor.chain().focus().setParagraph().run()}
+              className={editor.isActive("paragraph") ? "bg-accent font-semibold" : ""}
+            >
+              Paragraph
+            </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() =>
-                editor?.chain().focus().toggleHeading({ level: 1 }).run()
+                editor.chain().focus().toggleHeading({ level: 1 }).run()
               }
-              className="text-popover-foreground hover:bg-accent hover:text-accent-foreground"
+              className={
+                editor.isActive("heading", { level: 1 })
+                  ? "bg-accent font-semibold"
+                  : ""
+              }
             >
               Heading 1
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() =>
-                editor?.chain().focus().toggleHeading({ level: 2 }).run()
+                editor.chain().focus().toggleHeading({ level: 2 }).run()
               }
-              className="text-popover-foreground hover:bg-accent hover:text-accent-foreground"
+              className={
+                editor.isActive("heading", { level: 2 })
+                  ? "bg-accent font-semibold"
+                  : ""
+              }
             >
               Heading 2
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() =>
-                editor?.chain().focus().toggleHeading({ level: 3 }).run()
+                editor.chain().focus().toggleHeading({ level: 3 }).run()
               }
-              className="text-popover-foreground hover:bg-accent hover:text-accent-foreground"
+              className={
+                editor.isActive("heading", { level: 3 })
+                  ? "bg-accent font-semibold"
+                  : ""
+              }
             >
               Heading 3
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => editor?.chain().focus().setParagraph().run()}
-              className="text-popover-foreground hover:bg-accent hover:text-accent-foreground"
-            >
-              Paragraph
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
 
-        {/* Lists */}
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => editor?.chain().focus().toggleBulletList().run()}
-          className={`size-8 p-0 hover:bg-accent ${
-            editorState?.isBulletList
-              ? "bg-accent text-accent-foreground"
-              : "text-muted-foreground hover:text-foreground"
-          }`}
-        >
-          <List className="h-4 w-4" />
-        </Button>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => editor?.chain().focus().toggleOrderedList().run()}
-          className={`size-8 p-0 hover:bg-accent ${
-            editorState?.isOrderedList
-              ? "bg-accent text-accent-foreground"
-              : "text-muted-foreground hover:text-foreground"
-          }`}
-        >
-          <ListOrdered className="h-4 w-4" />
-        </Button>
+        <div className="w-px h-5 bg-border mx-1" />
 
-        <div className="w-px h-6 bg-border mx-1" />
+        {/* Inline Formatting */}
+        <div className="flex items-center gap-0.5">
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={() => editor.chain().focus().toggleBold().run()}
+            disabled={!editor.can().chain().focus().toggleBold().run()}
+            className={`size-8 p-0 ${
+              editor.isActive("bold") ? "bg-accent text-accent-foreground font-bold" : ""
+            }`}
+            title="Bold (Ctrl+B)"
+          >
+            <Bold className="size-4" />
+          </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={() => editor.chain().focus().toggleItalic().run()}
+            disabled={!editor.can().chain().focus().toggleItalic().run()}
+            className={`size-8 p-0 ${
+              editor.isActive("italic") ? "bg-accent text-accent-foreground" : ""
+            }`}
+            title="Italic (Ctrl+I)"
+          >
+            <Italic className="size-4" />
+          </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={() => editor.chain().focus().toggleStrike().run()}
+            disabled={!editor.can().chain().focus().toggleStrike().run()}
+            className={`size-8 p-0 ${
+              editor.isActive("strike") ? "bg-accent text-accent-foreground" : ""
+            }`}
+            title="Strikethrough"
+          >
+            <Strikethrough className="size-4" />
+          </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={() => editor.chain().focus().toggleCode().run()}
+            disabled={!editor.can().chain().focus().toggleCode().run()}
+            className={`size-8 p-0 ${
+              editor.isActive("code") ? "bg-accent text-accent-foreground" : ""
+            }`}
+            title="Inline Code"
+          >
+            <Code className="size-4" />
+          </Button>
+        </div>
 
-        {/* Text Formatting */}
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => editor?.chain().focus().toggleBold().run()}
-          disabled={!editorState?.canBold}
-          className={`size-8 p-0 hover:bg-accent ${
-            editorState?.isBold
-              ? "bg-accent text-accent-foreground"
-              : "text-muted-foreground hover:text-foreground"
-          }`}
-        >
-          <Bold className="h-4 w-4" />
-        </Button>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => editor?.chain().focus().toggleItalic().run()}
-          disabled={!editorState?.canItalic}
-          className={`size-8 p-0 hover:bg-accent ${
-            editorState?.isItalic
-              ? "bg-accent text-accent-foreground"
-              : "text-muted-foreground hover:text-foreground"
-          }`}
-        >
-          <Italic className="h-4 w-4" />
-        </Button>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => editor?.chain().focus().toggleStrike().run()}
-          disabled={!editorState?.canStrike}
-          className={`size-8 p-0 hover:bg-accent ${
-            editorState?.isStrike
-              ? "bg-accent text-accent-foreground"
-              : "text-muted-foreground hover:text-foreground"
-          }`}
-        >
-          <Strikethrough className="h-4 w-4" />
-        </Button>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => editor?.chain().focus().toggleCode().run()}
-          disabled={!editorState?.canCode}
-          className={`size-8 p-0 hover:bg-accent ${
-            editorState?.isCode
-              ? "bg-accent text-accent-foreground"
-              : "text-muted-foreground hover:text-foreground"
-          }`}
-        >
-          <Code className="h-4 w-4" />
-        </Button>
-        <Button
-          variant="ghost"
-          size="sm"
-          className="size-8 p-0 text-muted-foreground hover:text-foreground hover:bg-accent"
-        >
-          <Underline className="h-4 w-4" />
-        </Button>
+        <div className="w-px h-5 bg-border mx-1" />
 
-        <div className="w-px h-6 bg-border mx-1" />
-
-        {/* Additional Tools */}
-        <Button
-          variant="ghost"
-          size="sm"
-          className="size-8 p-0 text-muted-foreground hover:text-foreground hover:bg-accent"
-        >
-          <Link className="h-4 w-4" />
-        </Button>
-        <Button
-          variant="ghost"
-          size="sm"
-          className="size-8 p-0 text-muted-foreground hover:text-foreground hover:bg-accent"
-        >
-          <Superscript className="h-4 w-4" />
-        </Button>
-        <Button
-          variant="ghost"
-          size="sm"
-          className="size-8 p-0 text-muted-foreground hover:text-foreground hover:bg-accent"
-        >
-          <Subscript className="h-4 w-4" />
-        </Button>
-
-        <div className="w-px h-6 bg-border mx-1" />
-
-        {/* Alignment */}
-        <Button
-          variant="ghost"
-          size="sm"
-          className="size-8 p-0 text-muted-foreground hover:text-foreground hover:bg-accent"
-        >
-          <AlignLeft className="h-4 w-4" />
-        </Button>
-        <Button
-          variant="ghost"
-          size="sm"
-          className="size-8 p-0 text-muted-foreground hover:text-foreground hover:bg-accent"
-        >
-          <AlignCenter className="h-4 w-4" />
-        </Button>
-        <Button
-          variant="ghost"
-          size="sm"
-          className="size-8 p-0 text-muted-foreground hover:text-foreground hover:bg-accent"
-        >
-          <AlignRight className="h-4 w-4" />
-        </Button>
-        <Button
-          variant="ghost"
-          size="sm"
-          className="size-8 p-0 text-muted-foreground hover:text-foreground hover:bg-accent"
-        >
-          <AlignJustify className="h-4 w-4" />
-        </Button>
-
-        {/* Spacer */}
-        <div className="flex-1" />
-
-        {/* Add Button */}
-        <Button
-          variant="ghost"
-          size="sm"
-          className="h-8 px-2 text-muted-foreground hover:text-foreground hover:bg-accent gap-1"
-        >
-          <Plus className="h-4 w-4" />
-          Add
-        </Button>
+        {/* Lists & Blocks */}
+        <div className="flex items-center gap-0.5">
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={() => editor.chain().focus().toggleBulletList().run()}
+            className={`size-8 p-0 ${
+              editor.isActive("bulletList") ? "bg-accent text-accent-foreground" : ""
+            }`}
+            title="Bullet List"
+          >
+            <List className="size-4" />
+          </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={() => editor.chain().focus().toggleOrderedList().run()}
+            className={`size-8 p-0 ${
+              editor.isActive("orderedList") ? "bg-accent text-accent-foreground" : ""
+            }`}
+            title="Numbered List"
+          >
+            <ListOrdered className="size-4" />
+          </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={() => editor.chain().focus().toggleBlockquote().run()}
+            className={`size-8 p-0 ${
+              editor.isActive("blockquote") ? "bg-accent text-accent-foreground" : ""
+            }`}
+            title="Blockquote"
+          >
+            <Quote className="size-4" />
+          </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={() => editor.chain().focus().toggleCodeBlock().run()}
+            className={`size-8 p-0 ${
+              editor.isActive("codeBlock") ? "bg-accent text-accent-foreground" : ""
+            }`}
+            title="Code Block"
+          >
+            <SquareCode className="size-4" />
+          </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={() => editor.chain().focus().setHorizontalRule().run()}
+            className="size-8 p-0"
+            title="Horizontal Divider"
+          >
+            <Minus className="size-4" />
+          </Button>
+        </div>
       </div>
 
-      {/* Editor Content */}
-      <div className="min-h-96 p-6 bg-card">
-        <EditorContent
-          editor={editor}
-          className="prose prose-neutral dark:prose-invert max-w-none focus:outline-none [&_.ProseMirror]:focus:outline-none [&_.ProseMirror]:min-h-96 [&_.ProseMirror_h1]:text-3xl [&_.ProseMirror_h1]:font-bold [&_.ProseMirror_h1]:mb-4 [&_.ProseMirror_h2]:text-2xl [&_.ProseMirror_h2]:font-bold [&_.ProseMirror_h2]:mb-3 [&_.ProseMirror_p]:mb-4 [&_.ProseMirror_blockquote]:border-l-4 [&_.ProseMirror_blockquote]:border-border [&_.ProseMirror_blockquote]:pl-4 [&_.ProseMirror_blockquote]:italic [&_.ProseMirror_pre]:bg-muted [&_.ProseMirror_pre]:p-4 [&_.ProseMirror_pre]:rounded [&_.ProseMirror_pre]:overflow-x-auto [&_.ProseMirror_code]:bg-muted [&_.ProseMirror_code]:px-1 [&_.ProseMirror_code]:rounded"
-        />
-      </div>
+      {/* Editor Content Area */}
+      <EditorContent editor={editor} />
     </div>
   );
-};
+}
 
 export default RichTextEditor;
