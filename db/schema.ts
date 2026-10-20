@@ -91,32 +91,52 @@ export const accountRelations = relations(account, ({ one }) => ({
     references: [user.id],
   }),
 }));
-export const notebooks = pgTable("notebooks", {
-  id: text("id").primaryKey(),
-  name: text("name").notNull(),
-  userId:text('user_id').notNull().references(()=> user.id, {onDelete:'cascade'}),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at")
-});
+export const notebooks = pgTable(
+  "notebooks",
+  {
+    id: text("id")
+      .primaryKey()
+      .$defaultFn(() => crypto.randomUUID()),
+    name: text("name").notNull(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at")
+      .defaultNow()
+      .$onUpdate(() => /* @__PURE__ */ new Date())
+      .notNull(),
+  },
+  (table) => [index("notebooks_userId_idx").on(table.userId)],
+);
+
+export const notes = pgTable(
+  "notes",
+  {
+    id: text("id")
+      .primaryKey()
+      .$defaultFn(() => crypto.randomUUID()),
+    title: text("title").notNull(),
+    content: jsonb("content").notNull().default({}),
+    notebookId: text("notebook_id")
+      .notNull()
+      .references(() => notebooks.id, { onDelete: "cascade" }),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at")
+      .defaultNow()
+      .$onUpdate(() => /* @__PURE__ */ new Date())
+      .notNull(),
+  },
+  (table) => [index("notes_notebookId_idx").on(table.notebookId)],
+);
 
 export const notebookRelations = relations(notebooks, ({ many, one }) => ({
   notes: many(notes),
-    user: one(user, {
-     fields: [notebooks.userId],
-  references: [user.id],
-      })
+  user: one(user, {
+    fields: [notebooks.userId],
+    references: [user.id],
+  }),
 }));
-
-export type Notebook = typeof notebooks.$inferSelect;
-
-export const notes = pgTable("notes", {
-  id: text("id").primaryKey(),
-  title: text("name").notNull(),
-  content: jsonb('content').notNull(),
-  notebookId:text('notrbook_id').notNull().references(()=> notebooks.id, {onDelete:'cascade'}),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at")
-});
 
 export const noteRelations = relations(notes, ({ one }) => ({
   notebook: one(notebooks, {
@@ -124,3 +144,8 @@ export const noteRelations = relations(notes, ({ one }) => ({
     references: [notebooks.id],
   }),
 }));
+
+export type Notebook = typeof notebooks.$inferSelect;
+export type InsertNotebook = typeof notebooks.$inferInsert;
+export type Note = typeof notes.$inferSelect;
+export type InsertNote = typeof notes.$inferInsert;

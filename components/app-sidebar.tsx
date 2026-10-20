@@ -1,83 +1,54 @@
-"use client"
+import * as React from "react";
+import Link from "next/link";
+import { BookOpen } from "lucide-react";
 
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { BookOpen, LayoutDashboard, Settings } from "lucide-react"
-
-import { Logout } from "@/components/logout"
+import { SearchForm } from "@/components/search-form";
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
   SidebarRail,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
+import { getNotebooks } from "@/server/notebooks";
+import { SidebarData } from "./sidebar-data";
 
-const items = [
-  { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
-  { title: "Settings", url: "/dashboard/settings", icon: Settings },
-]
+export async function AppSidebar({
+  ...props
+}: React.ComponentProps<typeof Sidebar>) {
+  const res = await getNotebooks();
+  const notebooks = res.notebooks ?? [];
 
-export function AppSidebar() {
-  const pathname = usePathname()
+  const data = {
+    navMain: notebooks.map((notebook) => ({
+      id: notebook.id,
+      title: notebook.name,
+      url: `/dashboard/notebook/${notebook.id}`,
+      items: (notebook.notes ?? []).map((note) => ({
+        id: note.id,
+        title: note.title,
+        url: `/dashboard/notebook/${notebook.id}/note/${note.id}`,
+      })),
+    })),
+  };
 
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar {...props}>
       <SidebarHeader>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton size="lg" asChild>
-              <Link href="/">
-                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                  <BookOpen className="size-4" />
-                </div>
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">Notebook</span>
-                  <span className="truncate text-xs text-muted-foreground">
-                    Workspace
-                  </span>
-                </div>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
+        <Link href="/dashboard" className="flex items-center gap-2 pl-2">
+          <span className="flex size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+            <BookOpen className="size-4" />
+          </span>
+          <h2 className="font-semibold">Notebook</h2>
+        </Link>
+
+        <React.Suspense>
+          <SearchForm />
+        </React.Suspense>
       </SidebarHeader>
-
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>Platform</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton
-                    asChild
-                    isActive={pathname === item.url}
-                    tooltip={item.title}
-                  >
-                    <Link href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+      <SidebarContent className="gap-0">
+        <SidebarData data={data} />
       </SidebarContent>
-
-      <SidebarFooter>
-        <Logout />
-      </SidebarFooter>
-
       <SidebarRail />
     </Sidebar>
-  )
+  );
 }
