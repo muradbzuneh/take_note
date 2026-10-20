@@ -1,5 +1,4 @@
 import Image from 'next/image'
-import { HeroHeader } from '@/components/hero-section-6-header'
 import { cn } from '@/lib/utils'
 import { Google } from '@/components/ui/svgs/google'
 import { Trustpilot } from '@/components/ui/svgs/trustpilot'
@@ -64,17 +63,16 @@ const ProfileCard = ({ name, alt, imageSrc, className, cardClassName, rightMaskC
 
 export default function HeroSection() {
     return (
-        <>
-            <HeroHeader />
-
-            <main>
-                <section className="pb-24 pt-40 md:pt-56">
-                    <div className="relative mx-auto max-w-7xl px-6">
-                        <div>
-                            <h1 className="text-balance text-center text-4xl font-medium tracking-tight">
-                                Family money, finally organized. <br /> <span className="text-muted-foreground">Plan budgets, bills, and savings together</span>
-                            </h1>
-                        </div>
+        <section className="pb-24 pt-40 md:pt-56">
+            <div className="relative mx-auto max-w-7xl px-6">
+                <div>
+                    <h1 className="text-balance text-center text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
+                        Your notes, thoughts, and ideas. <br />{" "}
+                        <span className="text-muted-foreground font-normal">
+                            Organized in clean, beautiful notebooks.
+                        </span>
+                    </h1>
+                </div>
                         <div className="sm:aspect-3/2 relative mx-auto mt-6 aspect-square max-w-4xl overflow-hidden">
                             <ProfileCard
                                 name="Théo Balick"
@@ -133,7 +131,5 @@ export default function HeroSection() {
                         </div>
                     </div>
                 </section>
-            </main>
-        </>
     )
 }

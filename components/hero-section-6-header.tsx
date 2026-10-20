@@ -97,17 +97,8 @@ export const HeroHeader = () => {
                                     ))}
                                 </ul>
                             </div>
-                            <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit">
-                              <Button
-                                  variant="outline"
-                                  size="sm"
-                                  nativeButton={false}
-                                  render={
-                                      <Link href="#">
-                                        <ModeToggle />
-                                      </Link>
-                                  }
-                              />
+                            <div className="flex w-full items-center flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit">
+                              <ModeToggle />
                               <Button
                                     variant="outline"
                                     size="sm"
