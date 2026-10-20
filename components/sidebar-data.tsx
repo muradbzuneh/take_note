@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import {
   BookOpen,
   ChevronRight,
-  File,
+  FileText,
   LayoutDashboard,
   Plus,
   Settings,
@@ -23,6 +23,7 @@ import {
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarMenu,
+  SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarMenuSub,
@@ -67,65 +68,105 @@ export function SidebarData({ data }: SidebarDataProps) {
         notebook.items.length > 0
     );
 
+  const totalNotes = data.navMain.reduce(
+    (acc, nb) => acc + (nb.items?.length || 0),
+    0
+  );
+
   return (
-    <>
-      <SidebarGroup>
-        <SidebarGroupLabel>Workspace</SidebarGroupLabel>
+    <div className="flex flex-col gap-1 py-1">
+      <SidebarGroup className="py-1">
+        <SidebarGroupLabel className="text-xs font-semibold tracking-wider uppercase text-muted-foreground">
+          Workspace
+        </SidebarGroupLabel>
         <SidebarGroupContent>
           <SidebarMenu>
-            {navItems.map((item) => (
-              <SidebarMenuItem key={item.url}>
-                <SidebarMenuButton asChild isActive={pathname === item.url}>
-                  <Link href={item.url}>
-                    <item.icon />
-                    <span>{item.title}</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ))}
+            {navItems.map((item) => {
+              const isActive = pathname === item.url;
+              return (
+                <SidebarMenuItem key={item.url}>
+                  <SidebarMenuButton asChild isActive={isActive}>
+                    <Link href={item.url}>
+                      <item.icon className="size-4" />
+                      <span>{item.title}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              );
+            })}
           </SidebarMenu>
         </SidebarGroupContent>
       </SidebarGroup>
 
-      <SidebarGroup>
-        <SidebarGroupLabel>Notebooks</SidebarGroupLabel>
-        <CreateNotebookButton>
-          <SidebarGroupAction title="Create Notebook">
-            <Plus className="size-4" />
-            <span className="sr-only">Create Notebook</span>
-          </SidebarGroupAction>
-        </CreateNotebookButton>
-        <SidebarGroupContent>
+      <SidebarGroup className="py-1">
+        <div className="flex items-center justify-between px-2">
+          <SidebarGroupLabel className="text-xs font-semibold tracking-wider uppercase text-muted-foreground p-0">
+            Notebooks ({data.navMain.length})
+          </SidebarGroupLabel>
+          <CreateNotebookButton>
+            <button
+              type="button"
+              className="flex size-5 items-center justify-center rounded-sm text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors"
+              title="Create Notebook"
+            >
+              <Plus className="size-3.5" />
+              <span className="sr-only">Create Notebook</span>
+            </button>
+          </CreateNotebookButton>
+        </div>
+
+        <SidebarGroupContent className="mt-1">
           <SidebarMenu>
             {filteredData.map((notebook) => {
-              const isNotebookActive = pathname === notebook.url;
+              const isNotebookExactActive = pathname === notebook.url;
+              const isChildActive = pathname.startsWith(`${notebook.url}/note/`);
+              const isNotebookActive = isNotebookExactActive || isChildActive;
 
               return (
                 <Collapsible
                   key={notebook.url}
-                  defaultOpen
+                  defaultOpen={isNotebookActive || true}
                   className="group/collapsible"
                 >
                   <SidebarMenuItem>
-                    <CollapsibleTrigger asChild>
-                      <SidebarMenuButton
-                        isActive={isNotebookActive}
-                        tooltip={notebook.title}
-                      >
-                        <BookOpen className="size-4" />
-                        <span className="truncate">{notebook.title}</span>
-                        <ChevronRight className="ml-auto size-4 transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-                      </SidebarMenuButton>
-                    </CollapsibleTrigger>
+                    <div className="flex items-center w-full">
+                      <CollapsibleTrigger asChild>
+                        <SidebarMenuButton
+                          isActive={isNotebookExactActive}
+                          tooltip={notebook.title}
+                          className="flex-1 font-medium"
+                        >
+                          <ChevronRight className="size-3.5 transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90 shrink-0 text-muted-foreground" />
+                          <BookOpen className="size-4 shrink-0 text-primary/80" />
+                          <span className="truncate flex-1">{notebook.title}</span>
+                          <span className="text-[11px] text-muted-foreground px-1.5 py-0.5 rounded-full bg-sidebar-accent">
+                            {notebook.items.length}
+                          </span>
+                        </SidebarMenuButton>
+                      </CollapsibleTrigger>
+
+                      {notebook.id && (
+                        <CreateNoteButton notebookId={notebook.id}>
+                          <button
+                            type="button"
+                            title="New Note in this Notebook"
+                            className="opacity-0 group-hover/collapsible:opacity-100 size-6 flex items-center justify-center rounded text-muted-foreground hover:text-foreground hover:bg-sidebar-accent transition-opacity mr-1"
+                          >
+                            <Plus className="size-3.5" />
+                          </button>
+                        </CreateNoteButton>
+                      )}
+                    </div>
+
                     <CollapsibleContent>
-                      <SidebarMenuSub>
+                      <SidebarMenuSub className="mr-0 pr-0 border-l border-sidebar-border ml-3.5 pl-2">
                         <SidebarMenuSubItem>
                           <SidebarMenuSubButton
                             asChild
-                            isActive={isNotebookActive}
+                            isActive={isNotebookExactActive}
                           >
-                            <Link href={notebook.url}>
-                              <span>All Notes</span>
+                            <Link href={notebook.url} className="text-xs text-muted-foreground hover:text-foreground">
+                              <span>All Notes ({notebook.items.length})</span>
                             </Link>
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem>
@@ -136,9 +177,9 @@ export function SidebarData({ data }: SidebarDataProps) {
                               asChild
                               isActive={pathname === note.url}
                             >
-                              <Link href={note.url}>
-                                <File className="size-3.5" />
-                                <span className="truncate">{note.title}</span>
+                              <Link href={note.url} title={note.title}>
+                                <FileText className="size-3.5 shrink-0" />
+                                <span className="truncate">{note.title || "Untitled"}</span>
                               </Link>
                             </SidebarMenuSubButton>
                           </SidebarMenuSubItem>
@@ -149,10 +190,10 @@ export function SidebarData({ data }: SidebarDataProps) {
                             <CreateNoteButton notebookId={notebook.id}>
                               <button
                                 type="button"
-                                className="flex h-7 w-full items-center gap-2 rounded-md px-2 text-xs text-muted-foreground transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                                className="flex h-7 w-full items-center gap-1.5 rounded-md px-2 text-xs text-muted-foreground transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
                               >
-                                <Plus className="size-3.5" />
-                                <span>New Note</span>
+                                <Plus className="size-3" />
+                                <span>Add Note</span>
                               </button>
                             </CreateNoteButton>
                           </SidebarMenuSubItem>
@@ -166,12 +207,27 @@ export function SidebarData({ data }: SidebarDataProps) {
           </SidebarMenu>
 
           {filteredData.length === 0 && (
-            <div className="px-3 py-2 text-xs text-muted-foreground">
-              {query ? "No notes matching your search." : "No notebooks yet."}
+            <div className="px-3 py-4 text-center">
+              <p className="text-xs text-muted-foreground">
+                {query ? "No notes matching search" : "No notebooks yet"}
+              </p>
+              {!query && (
+                <div className="mt-2">
+                  <CreateNotebookButton>
+                    <button
+                      type="button"
+                      className="text-xs text-primary hover:underline inline-flex items-center gap-1"
+                    >
+                      <Plus className="size-3" />
+                      Create one
+                    </button>
+                  </CreateNotebookButton>
+                </div>
+              )}
             </div>
           )}
         </SidebarGroupContent>
       </SidebarGroup>
-    </>
+    </div>
   );
 }

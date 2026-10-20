@@ -1,22 +1,31 @@
 import * as React from "react";
 import Link from "next/link";
-import { BookOpen } from "lucide-react";
+import { headers } from "next/headers";
+import { BookOpen, Sparkles } from "lucide-react";
 
 import { SearchForm } from "@/components/search-form";
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { getNotebooks } from "@/server/notebooks";
+import { auth } from "@/lib/auth";
 import { SidebarData } from "./sidebar-data";
+import { SidebarUser } from "./sidebar-user";
 
 export async function AppSidebar({
   ...props
 }: React.ComponentProps<typeof Sidebar>) {
-  const res = await getNotebooks();
+  const [res, session] = await Promise.all([
+    getNotebooks(),
+    auth.api.getSession({ headers: await headers() }),
+  ]);
+
   const notebooks = res.notebooks ?? [];
+  const user = session?.user ?? null;
 
   const data = {
     navMain: notebooks.map((notebook) => ({
@@ -32,22 +41,41 @@ export async function AppSidebar({
   };
 
   return (
-    <Sidebar {...props}>
-      <SidebarHeader>
-        <Link href="/dashboard" className="flex items-center gap-2 pl-2">
-          <span className="flex size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+    <Sidebar collapsible="icon" {...props}>
+      <SidebarHeader className="border-b border-sidebar-border/50 pb-3">
+        <Link
+          href="/dashboard"
+          className="flex items-center gap-2.5 px-2 py-1.5 rounded-lg hover:bg-sidebar-accent transition-colors"
+        >
+          <span className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-sm">
             <BookOpen className="size-4" />
           </span>
-          <h2 className="font-semibold">Notebook</h2>
+          <div className="flex flex-col">
+            <span className="font-semibold text-sm leading-none flex items-center gap-1.5">
+              Notebook
+              <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-primary/10 text-primary">
+                Pro
+              </span>
+            </span>
+            <span className="text-xs text-muted-foreground mt-0.5">Personal Workspace</span>
+          </div>
         </Link>
 
-        <React.Suspense>
-          <SearchForm />
-        </React.Suspense>
+        <div className="mt-1">
+          <React.Suspense>
+            <SearchForm />
+          </React.Suspense>
+        </div>
       </SidebarHeader>
+
       <SidebarContent className="gap-0">
         <SidebarData data={data} />
       </SidebarContent>
+
+      <SidebarFooter className="border-t border-sidebar-border/50 p-2">
+        <SidebarUser user={user} />
+      </SidebarFooter>
+
       <SidebarRail />
     </Sidebar>
   );
