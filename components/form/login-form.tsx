@@ -10,6 +10,7 @@ import { toast } from "sonner"
 
 import { authClient } from "@/lib/auth-client"
 import { Button } from "@/components/ui/button"
+import { Google } from "@/components/ui/svgs/google"
 import {
   Card,
   CardAction,
@@ -139,22 +140,23 @@ export function LoginForm() {
           </div>
         </form>
       </CardContent>
-      <CardFooter className="flex-col gap-2">
+      <CardFooter className="flex-col gap-3">
         <Button
           type="submit"
           form="login-form"
-          className="w-full"
+          className="w-full shadow-lg shadow-emerald-500/20 font-semibold"
           disabled={isPending}
         >
-          {isPending ? "Logging in..." : "Login"}
+          {isPending ? "Signing in..." : "Sign In with Email"}
         </Button>
         <Button
           type="button"
           variant="outline"
-          className="w-full"
+          className="w-full flex items-center justify-center gap-2"
           onClick={() => signIn()}
         >
-          Login with Google
+          <Google className="size-4" />
+          <span>Continue with Google</span>
         </Button>
       </CardFooter>
     </Card>

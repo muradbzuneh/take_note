@@ -108,7 +108,7 @@ export function VerifyEmailForm() {
         <Button
           type="submit"
           form="verify-email-form"
-          className="w-full"
+          className="w-full shadow-lg shadow-emerald-500/20 font-semibold"
           disabled={isPending}
         >
           {isPending ? "Sending..." : "Resend verification email"}

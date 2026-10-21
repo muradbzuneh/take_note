@@ -3,6 +3,7 @@ import Link from "next/link";
 import { headers } from "next/headers";
 import { BookOpen, Sparkles } from "lucide-react";
 
+import { LogoIcon } from "@/components/logo";
 import { SearchForm } from "@/components/search-form";
 import {
   Sidebar,
@@ -47,17 +48,16 @@ export async function AppSidebar({
           href="/dashboard"
           className="flex items-center gap-2.5 px-2 py-1.5 rounded-lg hover:bg-sidebar-accent transition-colors"
         >
-          <span className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-sm">
-            <BookOpen className="size-4" />
-          </span>
+          <LogoIcon className="size-8" />
           <div className="flex flex-col">
-            <span className="font-semibold text-sm leading-none flex items-center gap-1.5">
-              Notebook
-              <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-primary/10 text-primary">
+            <span className="font-bold text-sm leading-none flex items-center gap-1.5">
+              <span>Note</span>
+              <span className="text-emerald-600 dark:text-emerald-400">book</span>
+              <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
                 Pro
               </span>
             </span>
-            <span className="text-xs text-muted-foreground mt-0.5">Personal Workspace</span>
+            <span className="text-xs text-muted-foreground mt-0.5">Workspace</span>
           </div>
         </Link>
 

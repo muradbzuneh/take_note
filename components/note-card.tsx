@@ -62,7 +62,7 @@ export default function NoteCard({ note }: NoteCardProps) {
           <Card className="h-full transition-all duration-200 hover:shadow-md hover:border-primary/40 group-hover:bg-muted/40">
             <CardHeader className="p-5">
               <div className="flex items-start justify-between gap-2">
-                <div className="size-8 rounded-lg bg-secondary text-secondary-foreground flex items-center justify-center shrink-0">
+                <div className="size-8 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shrink-0">
                   <FileText className="size-4" />
                 </div>
 

@@ -43,7 +43,7 @@ export default function Footer() {
                     </div>
                 </div>
                 <div className="@xl:flex-row @xl:justify-between flex flex-col-reverse gap-4 pt-8">
-                    <p className="text-muted-foreground text-sm">&copy; {2026} Veil.</p>
+                    <p className="text-muted-foreground text-sm">&copy; 2026 Notebook. All rights reserved.</p>
                     <div className="flex flex-wrap gap-4">
                         <Link
                             href="#"

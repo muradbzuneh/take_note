@@ -1,135 +1,92 @@
-import Image from 'next/image'
-import { cn } from '@/lib/utils'
-import { Google } from '@/components/ui/svgs/google'
-import { Trustpilot } from '@/components/ui/svgs/trustpilot'
-import { G2 } from '@/components/ui/svgs/g2'
+"use client";
 
-type ProfileCardProps = {
-    name: string
-    alt: string
-    imageSrc: string
-    className?: string
-    cardClassName?: string
-    rightMaskClassName?: string
-}
-
-const ProfileCard = ({ name, alt, imageSrc, className, cardClassName, rightMaskClassName }: ProfileCardProps) => {
-    return (
-        <div
-            aria-hidden
-            className={cn('absolute inset-0 z-10 m-auto size-fit', className)}
-        >
-            <div className="border-foreground/25 mask-radial-from-bottom-left mask-radial-from-65% mask-radial-[100%_60%] absolute inset-y-0 left-0 z-10 aspect-video rounded-l-2xl border-l border-t" />
-            <div className={cn('border-foreground/25 mask-radial-from-bottom-right mask-radial-from-65% mask-radial-[60%_100%] absolute inset-y-0 right-0 z-10 aspect-video rounded-r-2xl border-r border-t', rightMaskClassName)} />
-
-            <div className="relative overflow-hidden rounded-2xl border border-zinc-900/50 shadow-2xl shadow-black ring ring-black/50">
-                <Image
-                    src={imageSrc}
-                    alt={alt}
-                    width={120}
-                    height={120}
-                    className="absolute inset-0 my-auto size-fit blur"
-                />
-                <div className={cn('relative z-10 rounded-2xl p-2 pr-32 backdrop-blur dark:bg-zinc-900/80', cardClassName)}>
-                    <div className="flex gap-2">
-                        <div className="before:border-foreground/20 size-18 relative overflow-hidden rounded-xl shadow-md before:absolute before:inset-0 before:rounded-xl before:border">
-                            <Image
-                                src={imageSrc}
-                                alt={alt}
-                                width={136}
-                                height={136}
-                            />
-                        </div>
-                        <div className="py-1 pr-4">
-                            <div className="text-sm font-medium">{name}</div>
-                            <div className="mt-1.5 flex items-center gap-3">
-                                <div>
-                                    <div className="text-foreground/50 text-xs">Expenses</div>
-                                    <div className="mt-0.5 text-sm font-semibold">$32.65k</div>
-                                </div>
-                                <div className="bg-border h-7 w-px" />
-                                <div>
-                                    <div className="text-foreground/50 text-xs">Income</div>
-                                    <div className="mt-0.5 text-sm font-semibold">$2.65k</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    )
-}
+import Link from "next/link";
+import { ArrowRight, Sparkles, Check, ShieldCheck, Zap } from "lucide-react";
+import { buttonVariants } from "@/components/ui/button";
+import { GuestDashboardPreview } from "@/components/guest-dashboard-preview";
+import { cn } from "@/lib/utils";
 
 export default function HeroSection() {
-    return (
-        <section className="pb-24 pt-40 md:pt-56">
-            <div className="relative mx-auto max-w-7xl px-6">
-                <div>
-                    <h1 className="text-balance text-center text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
-                        Your notes, thoughts, and ideas. <br />{" "}
-                        <span className="text-muted-foreground font-normal">
-                            Organized in clean, beautiful notebooks.
-                        </span>
-                    </h1>
-                </div>
-                        <div className="sm:aspect-3/2 relative mx-auto mt-6 aspect-square max-w-4xl overflow-hidden">
-                            <ProfileCard
-                                name="Théo Balick"
-                                alt="Théo's avatar"
-                                imageSrc="https://avatars.githubusercontent.com/u/68236786?v=4"
-                                className="scale-85 z-11"
-                                cardClassName="bg-card/75"
-                                rightMaskClassName="border-foreground/35"
-                            />
+  return (
+    <section className="relative overflow-hidden pt-32 sm:pt-40 pb-16">
+      {/* Decorative gradient glow behind the hero */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
+      >
+        <div
+          style={{
+            clipPath:
+              "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
+          }}
+          className="relative left-[calc(50%-11rem)] aspect-1155/678 w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-linear-to-tr from-emerald-500 to-emerald-300 opacity-20 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
+        />
+      </div>
 
-                            <ProfileCard
-                                name="Shadcn"
-                                alt="Shadcn avatar"
-                                imageSrc="https://avatars.githubusercontent.com/u/124599?v=4"
-                                className="origin-top -translate-y-1 scale-75"
-                                cardClassName="bg-white/90"
-                            />
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
+        {/* Subtle pill badge */}
+        <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3.5 py-1 text-xs font-semibold text-emerald-600 dark:text-emerald-400 mb-6 backdrop-blur">
+          <Sparkles className="size-3.5 animate-pulse" />
+          <span>The Modern Notebook Experience</span>
+          <span className="size-1 rounded-full bg-emerald-500" />
+          <span className="opacity-80">v1.0 is live</span>
+        </div>
 
-                            <Image
-                                src="https://images.unsplash.com/photo-1600856209923-34372e319a5d?q=80&w=1289&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                                alt="background"
-                                width={1280}
-                                height={1000}
-                                className="mask-x-from-80% mask-y-from-80% size-full object-cover max-sm:scale-150 dark:mix-blend-lighten"
-                            />
-                        </div>
-                    </div>
+        {/* Hero Headline */}
+        <h1 className="text-balance text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight">
+          Your thoughts, notes, and ideas. <br />
+          <span className="bg-linear-to-r from-emerald-600 to-teal-500 dark:from-emerald-400 dark:to-teal-300 bg-clip-text text-transparent">
+            Beautifully organized.
+          </span>
+        </h1>
 
-                    <div className="mt-12">
-                        <p className="text-muted-foreground text-center text-lg">Trusted by over 100,000 families</p>
+        {/* Subtitle */}
+        <p className="mx-auto mt-6 max-w-2xl text-base sm:text-lg text-muted-foreground leading-relaxed">
+          The distraction-free workspace for thinkers, developers, and writers.
+          Organize your notes into rich notebooks, write with modern Tiptap blocks,
+          and sync seamlessly across all your devices.
+        </p>
 
-                        <div className="mt-6 flex flex-wrap justify-center gap-x-12 gap-y-6">
-                            <div className="flex items-center gap-2">
-                                <Google className="size-5" />
+        {/* Action Buttons */}
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+          <Link
+            href="/signup"
+            className={cn(
+              buttonVariants({ size: "lg" }),
+              "shadow-xl shadow-emerald-500/25 h-12 px-6 text-base font-semibold flex items-center gap-2"
+            )}
+          >
+            <span>Start Writing — It&apos;s Free</span>
+            <ArrowRight className="size-4" />
+          </Link>
 
-                                <p className="text-foreground text-lg font-medium">
-                                    <span>4.8</span> Google
-                                </p>
-                            </div>
+          <Link
+            href="#demo"
+            className={cn(
+              buttonVariants({ variant: "outline", size: "lg" }),
+              "h-12 px-6 text-base font-medium"
+            )}
+          >
+            Explore Guest Dashboard
+          </Link>
+        </div>
 
-                            <div className="flex items-center gap-2">
-                                <Trustpilot className="size-5" />
+        {/* Value badges */}
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-6 text-xs text-muted-foreground">
+          <span className="flex items-center gap-1.5">
+            <Check className="size-4 text-emerald-500" /> No credit card required
+          </span>
+          <span className="flex items-center gap-1.5">
+            <ShieldCheck className="size-4 text-emerald-500" /> Secure user authentication
+          </span>
+          <span className="flex items-center gap-1.5">
+            <Zap className="size-4 text-emerald-500" /> Instant cloud auto-save
+          </span>
+        </div>
+      </div>
 
-                                <p className="text-foreground text-lg font-medium">
-                                    <span>4.6</span> Trustpilot
-                                </p>
-                            </div>
-
-                            <div className="flex items-center gap-2">
-                                <G2 className="size-5" />
-
-                                <p className="text-foreground text-lg font-medium">
-                                    <span>4.5</span> G2
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-    )
+      {/* Guest Dashboard Interactive Showcase (Dark / Light toggleable) */}
+      <GuestDashboardPreview />
+    </section>
+  );
 }

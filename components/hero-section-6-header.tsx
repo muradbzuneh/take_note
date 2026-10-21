@@ -7,10 +7,8 @@ import { Button } from '@/components/ui/button'
 import React from 'react'
 
 const menuItems = [
-    { name: 'Product', href: '#link' },
-    { name: 'Solutions', href: '#link' },
-    { name: 'Pricing', href: '#link' },
-    { name: 'Company', href: '#link' },
+    { name: 'Features', href: '#features' },
+    { name: 'Interactive Demo', href: '#demo' },
 ]
 
 export const HeroHeader = () => {
@@ -47,7 +45,7 @@ export const HeroHeader = () => {
                                 aria-label="home"
                                 className="flex items-center space-x-2"
                             >
-                                <Logo uniColor />
+                                <Logo />
                             </Link>
 
                             <button
