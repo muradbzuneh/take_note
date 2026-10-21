@@ -15,7 +15,6 @@ import {
   Card,
   CardAction,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -92,20 +91,7 @@ export function LoginForm() {
     <Card className="w-full max-w-sm">
       <CardHeader>
         <CardTitle>Login to your account</CardTitle>
-        <CardDescription>
-          Enter your email below to login to your account
-        </CardDescription>
-        <CardAction>
-          <Button
-            variant="link"
-            nativeButton={false}
-            render={
-              <Link href="/signup">
-                <span>Sign Up</span>
-              </Link>
-            }
-          />
-        </CardAction>
+
       </CardHeader>
       <CardContent>
         <form
@@ -172,6 +158,17 @@ export function LoginForm() {
           <Google className="size-4" />
           <span>{isGooglePending ? "Connecting to Google..." : "Continue with Google"}</span>
         </Button>
+        <CardAction>
+          <Button
+            variant="link"
+            nativeButton={false}
+            render={
+              <Link href="/signup">
+               Are you new? <span>Sign Up</span>
+              </Link>
+            }
+          />
+        </CardAction>
       </CardFooter>
     </Card>
   )
