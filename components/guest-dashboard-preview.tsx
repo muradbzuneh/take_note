@@ -150,7 +150,7 @@ export function GuestDashboardPreview() {
   };
 
   return (
-    <div id="demo" className="relative mx-auto max-w-6xl px-4 sm:px-6 py-12">
+    <div id="demo" className="relative mx-auto max-w-6xl px-4 sm:px-6 py-12 scroll-mt-24">
       {/* Precision Frame with Real Elevation Shadows (No AI-blob blur) */}
       <div
         className={cn(

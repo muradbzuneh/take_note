@@ -57,7 +57,7 @@ export function Features() {
   return (
     <section
       id="features"
-      className="w-full px-5 py-16 sm:px-8 sm:py-20 border-t border-border bg-muted/20"
+      className="w-full px-5 py-16 sm:px-8 sm:py-20 border-t border-border bg-muted/20 scroll-mt-24"
     >
       <div className="mx-auto max-w-5xl">
         {/* Section heading */}
