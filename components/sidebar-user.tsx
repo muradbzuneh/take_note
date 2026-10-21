@@ -124,14 +124,14 @@ export function SidebarUser({ user }: SidebarUserProps) {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem
-                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                onClick={() => setTheme(theme === "light" ? "dark" : "light")}
               >
-                {theme === "dark" ? (
+                {theme === "light" ? (
                   <Sun className="mr-2 size-4" />
                 ) : (
                   <Moon className="mr-2 size-4" />
                 )}
-                <span>Toggle {theme === "dark" ? "Light" : "Dark"} mode</span>
+                <span>Toggle {theme === "light" ? "dark" : "light"} mode</span>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
