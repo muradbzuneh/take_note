@@ -8,7 +8,6 @@ import {
   Moon,
   Settings,
   Sun,
-  User,
 } from "lucide-react";
 import { useTheme } from "next-themes";
 import { toast } from "sonner";

@@ -19,11 +19,9 @@ import {
 } from "@/components/ui/collapsible";
 import {
   SidebarGroup,
-  SidebarGroupAction,
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarMenu,
-  SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarMenuSub,
@@ -67,11 +65,6 @@ export function SidebarData({ data }: SidebarDataProps) {
         notebook.title.toLowerCase().includes(query) ||
         notebook.items.length > 0
     );
-
-  const totalNotes = data.navMain.reduce(
-    (acc, nb) => acc + (nb.items?.length || 0),
-    0
-  );
 
   return (
     <div className="flex flex-col gap-1 py-1">

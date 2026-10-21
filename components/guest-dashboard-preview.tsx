@@ -19,19 +19,17 @@ import {
   CheckCircle2,
   FileText,
   BookOpen,
-  Search,
-  Plus,
+  Zap,
   ChevronDown,
-  SquareCheck,
 } from "lucide-react";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { LogoIcon } from "@/components/logo";
 import { cn } from "@/lib/utils";
 
 interface NoteTab {
   id: string;
   name: string;
-  icon: string;
+  icon: React.ComponentType<{ className?: string }>;
   title: string;
   tag: string;
   content: {
@@ -45,61 +43,61 @@ interface NoteTab {
 const DEMO_TABS: NoteTab[] = [
   {
     id: "notion-editor",
-    name: "Notion-like Editor",
-    icon: "📓",
-    title: "Project Strategy & Ideas 💡",
+    name: "Document Editor",
+    icon: FileText,
+    title: "Product Strategy & Architecture",
     tag: "Workspace",
     content: {
-      heading: "Building our next-generation notebook app",
+      heading: "Next-generation notebook platform",
       description:
-        "Capture your thoughts, structure thoughts into notebooks, and format every note with rich Tiptap blocks.",
+        "Capture thoughts, organize projects into notebooks, and format every document with rich block typography.",
       items: [
-        "Rich text typography with headers, lists, code & quotes",
-        "Instant search across all your notebooks and pages",
-        "Multi-notebook hierarchy designed for focused work",
-        "Cloud auto-save with instant synchronization",
+        "Rich text typography with headers, lists, code, and quotes",
+        "Instant live search across all notebooks and documents",
+        "Multi-notebook structure designed for focused productivity",
+        "Continuous cloud auto-save with session synchronization",
       ],
       quote:
-        "The simplest way to organize ideas, track projects, and keep your mind clear.",
+        "The fastest, cleanest way to organize knowledge and keep work structured.",
     },
   },
   {
     id: "quick-notes",
-    name: "Quick Notes",
-    icon: "⚡",
-    title: "Weekly Sprint & Meeting Notes 🎯",
+    name: "Meeting Notes",
+    icon: Zap,
+    title: "Weekly Sprint & Milestone Review",
     tag: "Team",
     content: {
-      heading: "Q4 Launch Checklist & Sprint Goals",
+      heading: "Sprint goals & key deliverables",
       description:
-        "Priorities and milestones for this sprint to deliver top-tier productivity features.",
+        "Action items and milestones for this release cycle to deliver high-performance editing.",
       items: [
-        "Complete user authentication with email verification",
-        "Fine-tune dark and light theme contrast",
-        "Test rich text markdown block conversions",
-        "Launch to early beta subscribers",
+        "User authentication with encrypted session security",
+        "High-contrast dark and light theme consistency",
+        "Tiptap rich text engine integration with auto-saving",
+        "Deployment verification and performance benchmarking",
       ],
       quote:
-        "Focus on velocity, simplicity, and delighting users at every step.",
+        "Focus on clarity, speed, and seamless user interaction.",
     },
   },
   {
     id: "journal",
     name: "Daily Journal",
-    icon: "🌿",
-    title: "Thoughts & Daily Reflections 🍃",
+    icon: BookOpen,
+    title: "Daily Reflections & Priorities",
     tag: "Personal",
     content: {
-      heading: "Morning mindfulness & creative routine",
+      heading: "Morning focus and daily intentions",
       description:
-        "Starting each day by writing down 3 key intentions in a calm, distraction-free environment.",
+        "Begin each day with 3 key priorities in an uncluttered, distraction-free environment.",
       items: [
-        "Drink coffee while reviewing today's priority list",
-        "30 minutes of uninterrupted writing in Notebook",
-        "Organize notes into designated folders before lunch",
+        "Review daily goals and highlight high-impact tasks",
+        "Distraction-free deep work session in Notebook",
+        "Review and categorize notes into notebooks",
       ],
       quote:
-        "Clear writing leads to clear thinking.",
+        "Clear writing leads to focused thinking and rapid execution.",
     },
   },
 ];
@@ -123,7 +121,7 @@ export function GuestDashboardPreview() {
 
   return (
     <div id="demo" className="relative mx-auto max-w-6xl px-4 sm:px-6 py-12">
-      {/* Background glow matching the green logo */}
+      {/* Background glow matching the emerald logo */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -top-12 left-1/2 -z-10 h-72 w-[42rem] -translate-x-1/2 rounded-full bg-emerald-500/15 blur-3xl"
@@ -156,21 +154,22 @@ export function GuestDashboardPreview() {
             <div className="hidden sm:flex items-center gap-2 pl-2 text-xs font-semibold">
               <LogoIcon className="size-5 rounded-md" />
               <span>
-                Note<span className="text-emerald-500">book</span> App Preview
+                Note<span className="text-emerald-500">book</span> Workspace
               </span>
             </div>
           </div>
 
-          {/* Interactive Document Tabs (Inspired by Image 2) */}
+          {/* Interactive Document Tabs with Professional Icons */}
           <div className="flex items-center gap-1 overflow-x-auto rounded-lg p-1 bg-black/5 dark:bg-white/5 text-xs font-medium">
             {DEMO_TABS.map((tab) => {
               const isActive = tab.id === activeTab;
+              const TabIcon = tab.icon;
               return (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
                   type="button"
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md transition-all whitespace-nowrap cursor-pointer ${
+                  className={`flex items-center gap-2 px-3 py-1.5 rounded-md transition-all whitespace-nowrap cursor-pointer ${
                     isActive
                       ? previewTheme === "dark"
                         ? "bg-emerald-500/20 text-emerald-400 font-semibold shadow-xs"
@@ -178,7 +177,7 @@ export function GuestDashboardPreview() {
                       : "text-muted-foreground hover:text-foreground hover:bg-black/5 dark:hover:bg-white/5"
                   }`}
                 >
-                  <span>{tab.icon}</span>
+                  <TabIcon className="size-3.5 text-emerald-500 shrink-0" />
                   <span>{tab.name}</span>
                 </button>
               );
@@ -191,7 +190,7 @@ export function GuestDashboardPreview() {
               <button
                 type="button"
                 onClick={() => setPreviewTheme("light")}
-                className={`flex items-center gap-1 px-2 py-1 rounded-md transition-colors cursor-pointer ${
+                className={`flex items-center gap-1 px-2.5 py-1 rounded-md transition-colors cursor-pointer ${
                   previewTheme === "light"
                     ? "bg-emerald-600 text-white font-medium"
                     : "text-muted-foreground hover:text-foreground"
@@ -205,7 +204,7 @@ export function GuestDashboardPreview() {
               <button
                 type="button"
                 onClick={() => setPreviewTheme("dark")}
-                className={`flex items-center gap-1 px-2 py-1 rounded-md transition-colors cursor-pointer ${
+                className={`flex items-center gap-1 px-2.5 py-1 rounded-md transition-colors cursor-pointer ${
                   previewTheme === "dark"
                     ? "bg-emerald-600 text-white font-medium"
                     : "text-muted-foreground hover:text-foreground"
@@ -219,7 +218,7 @@ export function GuestDashboardPreview() {
           </div>
         </div>
 
-        {/* Toolbar Bar (Matching Image 2 & Tiptap) */}
+        {/* Toolbar Bar */}
         <div
           className={`flex flex-wrap items-center gap-1 px-4 py-2 border-b text-xs select-none ${
             previewTheme === "dark"
@@ -312,7 +311,7 @@ export function GuestDashboardPreview() {
           </div>
 
           <div className="ml-auto hidden sm:flex items-center gap-2">
-            <span className="flex items-center gap-1 text-[11px] text-emerald-500 font-medium">
+            <span className="flex items-center gap-1.5 text-[11px] text-emerald-500 font-medium">
               <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
               Live Preview
             </span>
@@ -328,7 +327,7 @@ export function GuestDashboardPreview() {
               {currentTab.tag}
             </span>
             <span className="text-xs text-muted-foreground">
-              Updated 2 minutes ago
+              Updated just now
             </span>
           </div>
 
@@ -346,7 +345,7 @@ export function GuestDashboardPreview() {
             {/* Checklist / Action items */}
             <div className="space-y-2.5 pt-2">
               <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                Key Highlights
+                Key Deliverables
               </div>
               {currentTab.content.items.map((item, index) => {
                 const isChecked = !!checkedItems[index];
@@ -391,7 +390,7 @@ export function GuestDashboardPreview() {
           </div>
         </div>
 
-        {/* Floating Call to Action banner prompting guest to register */}
+        {/* Call to action footer */}
         <div
           className={`flex flex-col sm:flex-row items-center justify-between gap-4 p-5 sm:p-6 border-t ${
             previewTheme === "dark"

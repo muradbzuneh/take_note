@@ -1,7 +1,6 @@
 import * as React from "react";
 import Link from "next/link";
 import { headers } from "next/headers";
-import { BookOpen, Sparkles } from "lucide-react";
 
 import { LogoIcon } from "@/components/logo";
 import { SearchForm } from "@/components/search-form";

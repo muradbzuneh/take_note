@@ -34,6 +34,7 @@ type SignUpValues = z.infer<typeof signUpSchema>
 export function SignUpForm() {
   const router = useRouter()
   const [isPending, setIsPending] = useState(false)
+  const [isGooglePending, setIsGooglePending] = useState(false)
 
   const {
     register,
@@ -71,12 +72,25 @@ export function SignUpForm() {
       setIsPending(false)
     }
   }
+
   const signUp = async () => {
-     await authClient.signIn.social({
-      provider: "google",
-      callbackURL:"/dashboard"
-    });
-  };
+    try {
+      setIsGooglePending(true)
+      const res = await authClient.signIn.social({
+        provider: "google",
+        callbackURL: "/dashboard",
+      })
+      if (res?.error) {
+        toast.error(res.error.message ?? "Google sign up failed")
+      }
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Failed to initiate Google sign in"
+      )
+    } finally {
+      setIsGooglePending(false)
+    }
+  }
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>
@@ -162,9 +176,10 @@ export function SignUpForm() {
           variant="outline"
           className="w-full flex items-center justify-center gap-2"
           onClick={() => signUp()}
+          disabled={isPending || isGooglePending}
         >
           <Google className="size-4" />
-          <span>Continue with Google</span>
+          <span>{isGooglePending ? "Connecting to Google..." : "Continue with Google"}</span>
         </Button>
       </CardFooter>
     </Card>
