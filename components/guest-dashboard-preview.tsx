@@ -488,20 +488,9 @@ export function GuestDashboardPreview() {
                   })}
                 </div>
 
-                {/* Formatted Code Block */}
-                {activeNote.content.codeSnippet && (
-                  <div className="mb-6 rounded-md border border-border bg-muted/40 p-3.5 text-xs font-mono overflow-x-auto text-foreground">
-                    <div className="flex items-center justify-between text-[10px] text-muted-foreground pb-2 mb-2 border-b border-border/60">
-                      <span>{activeNote.content.codeSnippet.language}</span>
-                      <span>Read-only snippet</span>
-                    </div>
-                    <pre className="leading-relaxed">
-                      <code>{activeNote.content.codeSnippet.code}</code>
-                    </pre>
-                  </div>
-                )}
+                
+                
 
-                {/* Blockquote */}
                 {activeNote.content.quote && (
                   <blockquote className="border-l-2 border-primary pl-3 py-1 italic text-muted-foreground text-xs sm:text-sm bg-muted/30 rounded-r-xs">
                     &ldquo;{activeNote.content.quote}&rdquo;
