@@ -8,44 +8,49 @@ import { cn } from "@/lib/utils";
 
 export default function CallToAction() {
   return (
-    <section className="relative overflow-hidden py-20 md:py-28 border-t border-border/50">
-      {/* Background glow */}
+    <section className="relative overflow-hidden py-20 md:py-28 border-t border-border bg-background">
+      {/* Precision Dot Matrix Texture */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -bottom-20 left-1/2 -z-10 h-72 w-[40rem] -translate-x-1/2 rounded-full bg-emerald-500/10 blur-3xl"
+        className="pointer-events-none absolute inset-0 -z-10 bg-dot-matrix mask-radial-fade opacity-60"
+      />
+
+      {/* Subtle horizon glow */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -bottom-24 left-1/2 -z-10 h-72 w-[48rem] -translate-x-1/2 rounded-full bg-primary/10 blur-[90px]"
       />
 
       <div className="mx-auto max-w-7xl px-6">
-        <div className="mx-auto max-w-4xl text-center flex flex-col items-center">
-          <LogoIcon className="size-14 rounded-2xl mb-6 shadow-xl border-emerald-500/30" />
+        <div className="mx-auto max-w-3xl text-center flex flex-col items-center">
+          <LogoIcon className="size-12 rounded-md mb-6 border border-border/80" />
 
-          <h2 className="text-balance text-3xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
-            Ready to organize your mind in{" "}
-            <span className="text-emerald-600 dark:text-emerald-400">Notebook</span>?
+          <h2 className="text-balance text-2xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-foreground">
+            Structure your knowledge base with{" "}
+            <span className="text-primary">Notebook</span>
           </h2>
 
-          <p className="mt-4 max-w-xl text-base sm:text-lg text-muted-foreground">
-            Join thousands of users capturing their thoughts and organizing their ideas.
-            Set up in less than 30 seconds.
+          <p className="mt-4 max-w-lg text-sm sm:text-base text-muted-foreground leading-relaxed">
+            Distraction-free document editing, hierarchical notebooks, and live cloud synchronization.
           </p>
 
-          <div className="mt-8 flex flex-wrap justify-center gap-4">
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Link
               href="/signup"
               className={cn(
-                buttonVariants({ size: "lg" }),
-                "shadow-xl shadow-emerald-500/20 h-12 px-7 text-base font-semibold gap-2"
+                buttonVariants({ size: "default" }),
+                "h-10 px-5 text-sm font-medium gap-2"
               )}
             >
               <span>Create Free Account</span>
-              <ArrowRight className="size-4" />
+              <ArrowRight className="size-3.5" />
             </Link>
 
             <Link
               href="/login"
               className={cn(
-                buttonVariants({ variant: "outline", size: "lg" }),
-                "h-12 px-7 text-base font-medium"
+                buttonVariants({ variant: "outline", size: "default" }),
+                "h-10 px-5 text-sm font-medium"
               )}
             >
               Sign In

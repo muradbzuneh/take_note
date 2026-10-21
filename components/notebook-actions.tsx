@@ -70,12 +70,12 @@ export function NotebookActions({ notebookId, notebookName }: NotebookActionsPro
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" size="icon" className="size-9">
-            <MoreVertical className="size-4" />
+          <Button variant="outline" size="icon" className="size-8">
+            <MoreVertical className="size-3.5" />
             <span className="sr-only">Notebook settings</span>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
+        <DropdownMenuContent align="end" className="rounded-md">
           <DropdownMenuItem onClick={() => {
             setName(notebookName);
             setIsRenameOpen(true);
@@ -96,20 +96,19 @@ export function NotebookActions({ notebookId, notebookName }: NotebookActionsPro
 
       {/* Rename Dialog */}
       <Dialog open={isRenameOpen} onOpenChange={setIsRenameOpen}>
-        <DialogContent>
+        <DialogContent className="rounded-md sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Rename Notebook</DialogTitle>
-            <DialogDescription>
+            <DialogTitle className="text-base font-semibold">Rename Notebook</DialogTitle>
+            <DialogDescription className="text-xs">
               Change the title of this notebook.
             </DialogDescription>
           </DialogHeader>
-          <div className="py-2">
-            <Label htmlFor="notebook-name">Notebook Name</Label>
+          <div className="py-2 space-y-1.5">
+            <Label htmlFor="notebook-name" className="text-xs">Notebook Name</Label>
             <Input
               id="notebook-name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="mt-2"
               autoFocus
               onKeyDown={(e) => {
                 if (e.key === "Enter") handleRename();
@@ -119,13 +118,15 @@ export function NotebookActions({ notebookId, notebookName }: NotebookActionsPro
           <DialogFooter>
             <Button
               variant="outline"
+              size="sm"
               onClick={() => setIsRenameOpen(false)}
               disabled={isPending}
             >
               Cancel
             </Button>
-            <Button onClick={handleRename} disabled={isPending || !name.trim()}>
-              {isPending ? <Loader2 className="size-4 animate-spin" /> : "Save"}
+            <Button size="sm" onClick={handleRename} disabled={isPending || !name.trim()}>
+              {isPending ? <Loader2 className="size-3.5 animate-spin mr-1.5" /> : null}
+              Save Changes
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -133,16 +134,17 @@ export function NotebookActions({ notebookId, notebookName }: NotebookActionsPro
 
       {/* Delete Dialog */}
       <Dialog open={isDeleteOpen} onOpenChange={setIsDeleteOpen}>
-        <DialogContent>
+        <DialogContent className="rounded-md sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Delete Notebook</DialogTitle>
-            <DialogDescription>
+            <DialogTitle className="text-base font-semibold">Delete Notebook</DialogTitle>
+            <DialogDescription className="text-xs">
               Are you sure you want to delete &quot;{notebookName}&quot;? All notes inside this notebook will be permanently deleted.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
             <Button
               variant="outline"
+              size="sm"
               onClick={() => setIsDeleteOpen(false)}
               disabled={isPending}
             >
@@ -150,10 +152,12 @@ export function NotebookActions({ notebookId, notebookName }: NotebookActionsPro
             </Button>
             <Button
               variant="destructive"
+              size="sm"
               onClick={handleDelete}
               disabled={isPending}
             >
-              {isPending ? <Loader2 className="size-4 animate-spin" /> : "Delete"}
+              {isPending ? <Loader2 className="size-3.5 animate-spin mr-1.5" /> : null}
+              Delete Notebook
             </Button>
           </DialogFooter>
         </DialogContent>

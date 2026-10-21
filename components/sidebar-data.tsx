@@ -69,7 +69,7 @@ export function SidebarData({ data }: SidebarDataProps) {
   return (
     <div className="flex flex-col gap-1 py-1">
       <SidebarGroup className="py-1">
-        <SidebarGroupLabel className="text-xs font-semibold tracking-wider uppercase text-muted-foreground">
+        <SidebarGroupLabel className="text-[11px] font-semibold tracking-wider uppercase text-muted-foreground">
           Workspace
         </SidebarGroupLabel>
         <SidebarGroupContent>
@@ -78,9 +78,9 @@ export function SidebarData({ data }: SidebarDataProps) {
               const isActive = pathname === item.url;
               return (
                 <SidebarMenuItem key={item.url}>
-                  <SidebarMenuButton asChild isActive={isActive}>
+                  <SidebarMenuButton asChild isActive={isActive} className="text-xs font-medium">
                     <Link href={item.url}>
-                      <item.icon className="size-4" />
+                      <item.icon className="size-3.5" />
                       <span>{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
@@ -93,13 +93,13 @@ export function SidebarData({ data }: SidebarDataProps) {
 
       <SidebarGroup className="py-1">
         <div className="flex items-center justify-between px-2">
-          <SidebarGroupLabel className="text-xs font-semibold tracking-wider uppercase text-muted-foreground p-0">
+          <SidebarGroupLabel className="text-[11px] font-semibold tracking-wider uppercase text-muted-foreground p-0">
             Notebooks ({data.navMain.length})
           </SidebarGroupLabel>
           <CreateNotebookButton>
             <button
               type="button"
-              className="flex size-5 items-center justify-center rounded-sm text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors"
+              className="flex size-5 items-center justify-center rounded-xs text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors"
               title="Create Notebook"
             >
               <Plus className="size-3.5" />
@@ -127,12 +127,12 @@ export function SidebarData({ data }: SidebarDataProps) {
                         <SidebarMenuButton
                           isActive={isNotebookExactActive}
                           tooltip={notebook.title}
-                          className="flex-1 font-medium"
+                          className="flex-1 font-medium text-xs"
                         >
                           <ChevronRight className="size-3.5 transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90 shrink-0 text-muted-foreground" />
-                          <BookOpen className="size-4 shrink-0 text-primary/80" />
+                          <BookOpen className="size-3.5 shrink-0 text-primary" />
                           <span className="truncate flex-1">{notebook.title}</span>
-                          <span className="text-[11px] text-muted-foreground px-1.5 py-0.5 rounded-full bg-sidebar-accent">
+                          <span className="text-[10px] text-muted-foreground px-1.5 py-0.5 rounded-xs bg-sidebar-accent font-mono">
                             {notebook.items.length}
                           </span>
                         </SidebarMenuButton>

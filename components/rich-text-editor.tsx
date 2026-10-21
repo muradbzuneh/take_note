@@ -83,7 +83,7 @@ export function RichTextEditor({
 
   if (!editor) {
     return (
-      <div className="w-full rounded-xl border bg-card p-6 min-h-[400px] flex items-center justify-center text-muted-foreground text-sm">
+      <div className="w-full rounded-md border border-border bg-card p-6 min-h-[400px] flex items-center justify-center text-muted-foreground text-sm">
         Loading editor...
       </div>
     );
@@ -97,9 +97,9 @@ export function RichTextEditor({
   };
 
   return (
-    <div className="w-full rounded-xl border bg-card text-card-foreground shadow-xs overflow-hidden">
+    <div className="w-full rounded-md border border-border bg-card text-card-foreground overflow-hidden">
       {/* Editor Toolbar */}
-      <div className="flex flex-wrap items-center gap-1 p-2 bg-muted/40 border-b select-none">
+      <div className="flex flex-wrap items-center gap-1 p-1.5 bg-muted/40 border-b border-border select-none">
         {/* Undo / Redo */}
         <div className="flex items-center gap-0.5">
           <Button

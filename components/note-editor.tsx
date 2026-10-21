@@ -162,7 +162,7 @@ export function NoteEditor({ note }: { note: Note }) {
                 </>
               ) : lastSaved ? (
                 <>
-                  <Check className="size-3 text-emerald-500" />
+                  <Check className="size-3 text-primary" />
                   <span>Saved</span>
                 </>
               ) : null}
@@ -208,16 +208,17 @@ export function NoteEditor({ note }: { note: Note }) {
 
       {/* Delete Confirmation Modal */}
       <Dialog open={showDeleteConfirm} onOpenChange={setShowDeleteConfirm}>
-        <DialogContent>
+        <DialogContent className="rounded-md sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Delete Note</DialogTitle>
-            <DialogDescription>
+            <DialogTitle className="text-base font-semibold">Delete Note</DialogTitle>
+            <DialogDescription className="text-xs">
               Are you sure you want to delete &quot;{note.title || "this note"}&quot;? This action cannot be undone.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
             <Button
               variant="outline"
+              size="sm"
               onClick={() => setShowDeleteConfirm(false)}
               disabled={isPending}
             >
@@ -225,10 +226,12 @@ export function NoteEditor({ note }: { note: Note }) {
             </Button>
             <Button
               variant="destructive"
+              size="sm"
               onClick={handleDelete}
               disabled={isPending}
             >
-              {isPending ? <Loader2 className="size-4 animate-spin" /> : "Delete"}
+              {isPending ? <Loader2 className="size-3.5 animate-spin mr-1.5" /> : null}
+              Delete Note
             </Button>
           </DialogFooter>
         </DialogContent>

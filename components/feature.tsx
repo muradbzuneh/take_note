@@ -11,14 +11,6 @@ import {
   Layers,
 } from "lucide-react";
 
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
-
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -55,9 +47,9 @@ const features = [
   },
   {
     icon: Sparkles,
-    title: "Light & Dark Modes",
+    title: "Light & Dark Themes",
     description:
-      "Designed with an emerald aesthetic that looks crisp in light mode and easy on the eyes in dark mode.",
+      "Designed with an editorial navy and cool neutral palette crafted for long hours of focused writing.",
   },
 ];
 
@@ -65,65 +57,61 @@ export function Features() {
   return (
     <section
       id="features"
-      className="w-full px-5 py-20 sm:px-8 sm:py-24 border-t border-border/50 bg-muted/15"
+      className="w-full px-5 py-16 sm:px-8 sm:py-20 border-t border-border bg-muted/20"
     >
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto max-w-5xl">
         {/* Section heading */}
-        <div className="mx-auto mb-16 max-w-2xl text-center">
-          <p className="mb-3 text-xs font-bold tracking-widest text-emerald-600 dark:text-emerald-400 uppercase">
+        <div className="mx-auto mb-12 max-w-2xl text-center">
+          <p className="mb-2 text-xs font-semibold tracking-wider text-primary uppercase">
             Crafted for focused work
           </p>
 
-          <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-5xl">
+          <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground">
             Everything you need in a notebook
           </h2>
 
-          <p className="mt-4 text-base leading-7 text-muted-foreground sm:text-lg">
+          <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
             Capture fleeting thoughts, draft comprehensive documents, and organize your knowledge base.
           </p>
         </div>
 
         {/* Feature grid */}
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((feature) => {
             const Icon = feature.icon;
 
             return (
-              <Card
+              <div
                 key={feature.title}
-                className="h-full border border-border/60 bg-card/60 backdrop-blur-xs transition-all duration-200 hover:border-emerald-500/40 hover:shadow-lg hover:shadow-emerald-500/5 hover:-translate-y-1"
+                className="rounded-md border border-border bg-card p-5 transition-colors hover:border-primary/50"
               >
-                <CardHeader>
-                  <div className="mb-3 flex size-10 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
-                    <Icon className="size-5" />
-                  </div>
+                <div className="mb-3 flex size-8 items-center justify-center rounded-sm bg-muted text-primary border border-border/60">
+                  <Icon className="size-4" />
+                </div>
 
-                  <CardTitle className="text-lg font-bold">
-                    {feature.title}
-                  </CardTitle>
-                </CardHeader>
+                <h3 className="text-sm font-semibold text-foreground">
+                  {feature.title}
+                </h3>
 
-                <CardContent>
-                  <CardDescription className="text-sm leading-6">
-                    {feature.description}
-                  </CardDescription>
-                </CardContent>
-              </Card>
+                <p className="mt-1.5 text-xs text-muted-foreground leading-relaxed">
+                  {feature.description}
+                </p>
+              </div>
             );
           })}
         </div>
 
         {/* Call to action */}
-        <div className="mt-14 flex justify-center">
+        <div className="mt-12 flex justify-center">
           <Link
             href="/signup"
             className={cn(
-              buttonVariants({ size: "lg" }),
-              "group shadow-xl shadow-emerald-500/20 h-12 px-7 text-base font-semibold flex items-center gap-2"
+              buttonVariants({ size: "default" }),
+              "h-10 px-5 text-sm font-medium flex items-center gap-2"
             )}
           >
             <span>Start Taking Notes Today</span>
-            <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+            <ArrowRight className="size-3.5" />
           </Link>
         </div>
       </div>

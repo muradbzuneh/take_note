@@ -35,7 +35,7 @@ export const HeroHeader = () => {
         <header>
             <nav
                 data-state={menuState && 'active'}
-                className="bg-background fixed top-0 z-20 w-full max-lg:data-[state=active]:bottom-0"
+                className="bg-background/80 backdrop-blur-md border-b border-border/40 fixed top-0 z-20 w-full max-lg:data-[state=active]:bottom-0 max-lg:data-[state=active]:bg-background transition-colors"
             >
                 <div className="mx-auto max-w-7xl px-6">
                     <div className="relative flex flex-wrap items-center justify-between gap-6 py-5 lg:gap-0">

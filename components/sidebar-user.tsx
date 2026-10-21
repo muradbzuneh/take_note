@@ -75,41 +75,41 @@ export function SidebarUser({ user }: SidebarUserProps) {
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <div className="flex size-8 items-center justify-center rounded-lg bg-primary/10 text-primary font-medium text-xs">
+              <div className="flex size-7 items-center justify-center rounded-sm bg-muted text-primary font-medium text-xs">
                 {user?.image ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={user.image}
                     alt={displayName}
-                    className="size-8 rounded-lg object-cover"
+                    className="size-7 rounded-sm object-cover"
                   />
                 ) : (
                   initials
                 )}
               </div>
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">{displayName}</span>
-                <span className="truncate text-xs text-muted-foreground">
+              <div className="grid flex-1 text-left text-xs leading-tight">
+                <span className="truncate font-medium">{displayName}</span>
+                <span className="truncate text-[11px] text-muted-foreground">
                   {displayEmail}
                 </span>
               </div>
-              <ChevronsUpDown className="ml-auto size-4" />
+              <ChevronsUpDown className="ml-auto size-3.5 opacity-60" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
+            className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-md"
             side={isMobile ? "bottom" : "right"}
             align="end"
             sideOffset={4}
           >
             <DropdownMenuLabel className="p-0 font-normal">
-              <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                <div className="flex size-8 items-center justify-center rounded-lg bg-primary/10 text-primary font-medium text-xs">
+              <div className="flex items-center gap-2 px-1 py-1.5 text-left text-xs">
+                <div className="flex size-7 items-center justify-center rounded-sm bg-muted text-primary font-medium text-xs">
                   {initials}
                 </div>
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">{displayName}</span>
-                  <span className="truncate text-xs text-muted-foreground">
+                <div className="grid flex-1 text-left text-xs leading-tight">
+                  <span className="truncate font-medium">{displayName}</span>
+                  <span className="truncate text-[11px] text-muted-foreground">
                     {displayEmail}
                   </span>
                 </div>

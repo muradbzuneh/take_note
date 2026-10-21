@@ -10,21 +10,21 @@ interface LogoProps {
 export const Logo = ({ className, iconOnly = false, size = "md" }: LogoProps) => {
   const iconSizes = {
     sm: "size-7",
-    md: "size-9",
-    lg: "size-11",
+    md: "size-8.5",
+    lg: "size-10",
   };
 
   const textSizes = {
-    sm: "text-lg",
-    md: "text-xl",
-    lg: "text-2xl",
+    sm: "text-base",
+    md: "text-lg",
+    lg: "text-xl",
   };
 
   return (
-    <div className={cn("inline-flex items-center gap-2.5 font-bold tracking-tight select-none", className)}>
-      <div className={cn("relative overflow-hidden rounded-xl bg-white shadow-xs border border-emerald-500/20 shrink-0 p-0.5", iconSizes[size])}>
+    <div className={cn("inline-flex items-center gap-2.5 font-semibold tracking-tight select-none", className)}>
+      <div className={cn("relative overflow-hidden rounded-md bg-white border border-border/80 shrink-0 p-0.5", iconSizes[size])}>
         <Image
-          src="/logo.png"
+          src="/logo-icon.png"
           alt="Notebook Logo"
           width={48}
           height={48}
@@ -34,9 +34,9 @@ export const Logo = ({ className, iconOnly = false, size = "md" }: LogoProps) =>
       </div>
 
       {!iconOnly && (
-        <span className={cn("leading-none font-bold", textSizes[size])}>
+        <span className={cn("leading-none font-bold tracking-tight", textSizes[size])}>
           <span className="text-foreground">Note</span>
-          <span className="text-emerald-600 dark:text-emerald-400">book</span>
+          <span className="text-primary">book</span>
         </span>
       )}
     </div>
@@ -45,9 +45,9 @@ export const Logo = ({ className, iconOnly = false, size = "md" }: LogoProps) =>
 
 export const LogoIcon = ({ className }: { className?: string; uniColor?: boolean }) => {
   return (
-    <div className={cn("relative size-8 overflow-hidden rounded-xl bg-white shadow-xs border border-emerald-500/20 shrink-0 p-0.5", className)}>
+    <div className={cn("relative size-8 overflow-hidden rounded-md bg-white border border-border/80 shrink-0 p-0.5", className)}>
       <Image
-        src="/logo.png"
+        src="/logo-icon.png"
         alt="Notebook Logo"
         width={36}
         height={36}

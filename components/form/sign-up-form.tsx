@@ -60,7 +60,7 @@ export function SignUpForm() {
       }
 
       toast.success(
-        "Account created. Check your email to verify your account."
+        "Account created successfully! Please sign in with your credentials."
       )
       router.push("/login")
       router.refresh()
@@ -166,7 +166,7 @@ export function SignUpForm() {
         <Button
           type="submit"
           form="signup-form"
-          className="w-full shadow-lg shadow-emerald-500/20 font-semibold"
+          className="w-full font-medium"
           disabled={isPending}
         >
           {isPending ? "Creating account..." : "Create Account with Email"}

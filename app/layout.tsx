@@ -19,7 +19,8 @@ export const metadata: Metadata = {
   title: "Notebook — Beautiful Notes, Thoughts & Ideas",
   description: "Distraction-free workspace to capture thoughts, organize notes into notebooks, and format with modern rich text blocks.",
   icons: {
-    icon: "/logo.png",
+    icon: "/favicon.png",
+    apple: "/logo-icon.png",
   },
 };
 

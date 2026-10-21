@@ -40,7 +40,7 @@
 
 **Notebook** is a full-featured, responsive web application engineered for capturing fleeting thoughts, drafting in-depth specifications, and organizing notes into structured notebooks. 
 
-The user interface is styled with a signature emerald-green visual identity, offering seamless switching between dark obsidian and crisp light themes, complete with an interactive guest showcase and a secure, authenticated dashboard workspace.
+The user interface is styled with a restrained, editorial productivity aesthetic featuring muted navy blue (`#244A73`), white, cool neutral gray, charcoal text, and subtle borders. It offers seamless switching between dark navy and crisp light themes, complete with an interactive workspace showcase and a secure, authenticated dashboard workspace.
 
 ---
 
@@ -105,7 +105,7 @@ notebook/
 │   ├── forget-password/page.tsx         # Password recovery
 │   ├── reset-password/page.tsx          # Password reset with token
 │   ├── verify-email/page.tsx            # Email verification prompt
-│   ├── globals.css                      # Tailwind v4 theme, emerald tokens, ProseMirror styles
+│   ├── globals.css                      # Tailwind v4 theme, navy tokens, ProseMirror styles
 │   ├── layout.tsx                       # Root layout with theme provider and toaster
 │   └── page.tsx                         # Landing page with hero & interactive demo
 ├── components/
@@ -255,6 +255,34 @@ The application is fully optimized for one-click deployment on [Vercel](https://
    - Visit `https://your-app.vercel.app/signup` and create an account.
    - Verify that notebooks can be created, edited, and deleted.
    - Verify that notes open smoothly in the Tiptap editor and auto-save.
+
+### Troubleshooting Vercel Database & Backend Connection
+
+If you encounter issues fetching data or authenticating on Vercel:
+
+1. **Do you need a separate backend server?**
+   **No!** Next.js is fullstack. Your Server Actions (`server/notebooks.ts`, `server/notes.ts`) and Auth API (`app/api/auth/[...all]`) are automatically deployed as Vercel Serverless Functions in the same single deployment.
+
+2. **Database connection failed / cannot fetch:**
+   - Go to your **Vercel Dashboard -> Project Settings -> Environment Variables**.
+   - Make sure `DATABASE_URL` is set to your Neon PostgreSQL connection string (`postgresql://...sslmode=require`).
+   - If `DATABASE_URL` was missing or added after deployment, trigger a **Redeploy** (Deployments -> `...` -> Redeploy).
+
+3. **Authentication or "Failed to fetch" on Sign In / Sign Up:**
+   - Ensure `BETTER_AUTH_URL` is set to `https://your-actual-app.vercel.app` (not `http://localhost:3000`).
+   - If you leave `REQUIRE_EMAIL_VERIFICATION="false"`, you can log in immediately without setting up a custom email domain in Resend.
+   - Ensure `BETTER_AUTH_SECRET` is added to Vercel Environment Variables.
+
+4. **Database tables not created yet:**
+   - From your local machine, run:
+     ```bash
+     npm run db:push
+     ```
+   - This ensures all tables (`user`, `session`, `account`, `verification`, `notebooks`, `notes`) exist in your Neon PostgreSQL database.
+
+5. **Inspecting Server Logs on Vercel:**
+   - Go to **Vercel Dashboard -> Your Project -> Logs** (or click on your latest Deployment -> **Functions** tab).
+   - This will display real-time errors, database connection exceptions, or missing environment variable logs.
 
 ---
 

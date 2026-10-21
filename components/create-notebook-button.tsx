@@ -75,12 +75,12 @@ export const CreateNotebookButton = ({
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        {children ?? <Button className="w-max">Create Notebook</Button>}
+        {children ?? <Button size="sm" className="w-max font-medium">New Notebook</Button>}
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="rounded-md sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Create Notebook</DialogTitle>
-          <DialogDescription>
+          <DialogTitle className="text-base font-semibold">Create Notebook</DialogTitle>
+          <DialogDescription className="text-xs">
             Create a new notebook to organize your notes.
           </DialogDescription>
         </DialogHeader>

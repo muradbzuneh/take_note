@@ -157,7 +157,7 @@ export function LoginForm() {
         <Button
           type="submit"
           form="login-form"
-          className="w-full shadow-lg shadow-emerald-500/20 font-semibold"
+          className="w-full font-medium"
           disabled={isPending}
         >
           {isPending ? "Signing in..." : "Sign In with Email"}

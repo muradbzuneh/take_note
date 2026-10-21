@@ -42,21 +42,18 @@ export async function AppSidebar({
 
   return (
     <Sidebar collapsible="icon" {...props}>
-      <SidebarHeader className="border-b border-sidebar-border/50 pb-3">
+      <SidebarHeader className="border-b border-sidebar-border pb-2.5">
         <Link
           href="/dashboard"
-          className="flex items-center gap-2.5 px-2 py-1.5 rounded-lg hover:bg-sidebar-accent transition-colors"
+          className="flex items-center gap-2.5 px-2 py-1.5 rounded-md hover:bg-sidebar-accent transition-colors"
         >
-          <LogoIcon className="size-8" />
+          <LogoIcon className="size-7" />
           <div className="flex flex-col">
-            <span className="font-bold text-sm leading-none flex items-center gap-1.5">
+            <span className="font-bold text-sm leading-none flex items-center gap-1">
               <span>Note</span>
-              <span className="text-emerald-600 dark:text-emerald-400">book</span>
-              <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
-                Pro
-              </span>
+              <span className="text-primary">book</span>
             </span>
-            <span className="text-xs text-muted-foreground mt-0.5">Workspace</span>
+            <span className="text-[11px] text-muted-foreground mt-0.5">Workspace</span>
           </div>
         </Link>
 
@@ -71,7 +68,7 @@ export async function AppSidebar({
         <SidebarData data={data} />
       </SidebarContent>
 
-      <SidebarFooter className="border-t border-sidebar-border/50 p-2">
+      <SidebarFooter className="border-t border-sidebar-border p-2">
         <SidebarUser user={user} />
       </SidebarFooter>
 

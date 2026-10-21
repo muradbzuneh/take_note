@@ -23,38 +23,38 @@ export default async function SettingsPage() {
         { label: "Settings", href: "/dashboard/settings" },
       ]}
     >
-      <div className="max-w-4xl space-y-6">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Settings</h1>
-          <p className="text-muted-foreground text-sm">
+      <div className="max-w-3xl space-y-6">
+        <div className="pb-4 border-b border-border/80">
+          <h1 className="text-xl font-semibold tracking-tight text-foreground">Settings</h1>
+          <p className="text-xs text-muted-foreground mt-0.5">
             Manage your account settings, workspace preferences, and security.
           </p>
         </div>
 
-        <div className="grid gap-6">
+        <div className="grid gap-5">
           {/* User Profile Card */}
-          <Card>
-            <CardHeader>
+          <Card className="rounded-md border border-border">
+            <CardHeader className="pb-3">
               <div className="flex items-center gap-2">
                 <User className="size-4 text-primary" />
-                <CardTitle className="text-base">Profile Information</CardTitle>
+                <CardTitle className="text-sm font-semibold">Profile Information</CardTitle>
               </div>
-              <CardDescription>
+              <CardDescription className="text-xs">
                 Your personal account details.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="rounded-lg border p-3">
-                  <div className="text-xs text-muted-foreground font-medium">Name</div>
-                  <div className="text-sm font-semibold mt-1">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="rounded-md border border-border bg-muted/20 p-3">
+                  <div className="text-[11px] text-muted-foreground font-medium">Name</div>
+                  <div className="text-sm font-medium mt-0.5 text-foreground">
                     {user?.name || "Not provided"}
                   </div>
                 </div>
 
-                <div className="rounded-lg border p-3">
-                  <div className="text-xs text-muted-foreground font-medium">Email</div>
-                  <div className="text-sm font-semibold mt-1">
+                <div className="rounded-md border border-border bg-muted/20 p-3">
+                  <div className="text-[11px] text-muted-foreground font-medium">Email</div>
+                  <div className="text-sm font-medium mt-0.5 text-foreground">
                     {user?.email || "Not provided"}
                   </div>
                 </div>
@@ -63,21 +63,21 @@ export default async function SettingsPage() {
           </Card>
 
           {/* Appearance Card */}
-          <Card>
-            <CardHeader>
+          <Card className="rounded-md border border-border">
+            <CardHeader className="pb-3">
               <div className="flex items-center gap-2">
                 <Palette className="size-4 text-primary" />
-                <CardTitle className="text-base">Appearance</CardTitle>
+                <CardTitle className="text-sm font-semibold">Appearance</CardTitle>
               </div>
-              <CardDescription>
+              <CardDescription className="text-xs">
                 Customize how Notebook looks on your device.
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium">Theme Mode</p>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs font-medium text-foreground">Theme Mode</p>
+                  <p className="text-[11px] text-muted-foreground">
                     Switch between light, dark, or system preferences.
                   </p>
                 </div>
@@ -87,13 +87,13 @@ export default async function SettingsPage() {
           </Card>
 
           {/* Session & Security */}
-          <Card>
-            <CardHeader>
+          <Card className="rounded-md border border-border">
+            <CardHeader className="pb-3">
               <div className="flex items-center gap-2">
                 <Shield className="size-4 text-primary" />
-                <CardTitle className="text-base">Account Session</CardTitle>
+                <CardTitle className="text-sm font-semibold">Account Session</CardTitle>
               </div>
-              <CardDescription>
+              <CardDescription className="text-xs">
                 Manage your active session.
               </CardDescription>
             </CardHeader>

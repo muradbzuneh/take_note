@@ -22,12 +22,12 @@ export function SearchForm({ ...props }: React.ComponentProps<"form">) {
           </Label>
           <SidebarInput
             id="search"
-            placeholder="Search your notes..."
-            className="pl-8"
+            placeholder="Search notes..."
+            className="pl-8 h-8 text-xs rounded-md bg-background border-border"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
-          <Search className="pointer-events-none absolute top-1/2 left-2 size-4 -translate-y-1/2 opacity-50 select-none" />
+          <Search className="pointer-events-none absolute top-1/2 left-2.5 size-3.5 -translate-y-1/2 opacity-50 select-none text-muted-foreground" />
         </SidebarGroupContent>
       </SidebarGroup>
     </form>

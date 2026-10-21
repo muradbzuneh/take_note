@@ -8,7 +8,24 @@ import { db } from "@/db"
 import * as schema from "@/db/schema"
 import { sendEmail } from "@/lib/email"
 
+const getProductionBaseUrl = () => {
+  if (process.env.BETTER_AUTH_URL) return process.env.BETTER_AUTH_URL
+  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  }
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}`
+  }
+  return undefined
+}
+
 export const auth = betterAuth({
+  baseURL: getProductionBaseUrl(),
+  trustedOrigins: [
+    process.env.BETTER_AUTH_URL,
+    process.env.NEXT_PUBLIC_BASE_URL,
+    "https://*.vercel.app",
+  ].filter(Boolean) as string[],
   database: drizzleAdapter(db, {
     provider: "pg",
     schema: {
@@ -20,7 +37,7 @@ export const auth = betterAuth({
   }),
   emailAndPassword: {
     enabled: true,
-    requireEmailVerification: true,
+    requireEmailVerification: process.env.REQUIRE_EMAIL_VERIFICATION === "true",
     resetPasswordTokenExpiresIn: 60 * 60,
     sendResetPassword: async ({ user, url }) => {
       try {
@@ -37,14 +54,18 @@ export const auth = betterAuth({
       console.log(`[auth] password reset for ${user.email}`)
     },
   },
-      socialProviders: {
-          google: { 
-              clientId: process.env.GOOGLE_CLIENT_ID as string, 
-              clientSecret: process.env.GOOGLE_CLIENT_SECRET as string, 
-          }, 
-      },
+  socialProviders: {
+    ...(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET
+      ? {
+          google: {
+            clientId: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+          },
+        }
+      : {}),
+  },
   emailVerification: {
-    sendOnSignUp: true,
+    sendOnSignUp: process.env.REQUIRE_EMAIL_VERIFICATION === "true",
     autoSignInAfterVerification: true,
     sendVerificationEmail: async ({ user, url }) => {
       try {

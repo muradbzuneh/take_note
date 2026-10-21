@@ -167,7 +167,7 @@ export function ResetPasswordForm() {
         <Button
           type="submit"
           form="reset-password-form"
-          className="w-full shadow-lg shadow-emerald-500/20 font-semibold"
+          className="w-full font-medium"
           disabled={isPending}
         >
           {isPending ? "Resetting..." : "Reset password"}

@@ -20,23 +20,30 @@ interface PageWrapperProps {
 
 export function PageWrapper({ children, breadcrumbs }: PageWrapperProps) {
   return (
-    <div className="flex flex-col gap-4">
-      <header className="flex items-center p-4 border-b">
+    <div className="flex flex-col min-h-screen bg-background">
+      <header className="flex h-12 items-center px-4 md:px-6 border-b border-border bg-background shrink-0">
         <div className="flex items-center justify-between w-full">
-          <div className="flex items-center gap-4">
-            <SidebarTrigger />
+          <div className="flex items-center gap-3">
+            <SidebarTrigger className="size-7" />
 
             <Breadcrumb>
-              <BreadcrumbList>
+              <BreadcrumbList className="text-xs">
                 {breadcrumbs.map((breadcrumb, index) => (
                   <Fragment key={breadcrumb.label}>
                     <BreadcrumbItem>
-                      <BreadcrumbLink href={breadcrumb.href}>
+                      <BreadcrumbLink
+                        href={breadcrumb.href}
+                        className={
+                          index === breadcrumbs.length - 1
+                            ? "font-medium text-foreground"
+                            : "text-muted-foreground hover:text-foreground"
+                        }
+                      >
                         {breadcrumb.label}
                       </BreadcrumbLink>
                     </BreadcrumbItem>
                     {index !== breadcrumbs.length - 1 && (
-                      <BreadcrumbSeparator />
+                      <BreadcrumbSeparator className="text-muted-foreground/40" />
                     )}
                   </Fragment>
                 ))}
@@ -44,14 +51,14 @@ export function PageWrapper({ children, breadcrumbs }: PageWrapperProps) {
             </Breadcrumb>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
             <ModeToggle />
             <Logout />
           </div>
         </div>
       </header>
 
-      <div className="flex flex-1 flex-col gap-4 p-4 pt-0">{children}</div>
+      <main className="flex-1 p-6 md:p-8 max-w-6xl w-full mx-auto">{children}</main>
     </div>
   );
 }

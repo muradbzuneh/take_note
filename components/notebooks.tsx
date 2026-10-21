@@ -3,15 +3,9 @@
 import Link from "next/link";
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { BookOpen, MoreVertical, Pencil, Trash2, Loader2 } from "lucide-react";
+import { BookOpen, MoreVertical, Pencil, Trash2, Loader2, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -91,11 +85,13 @@ export function Notebooks({ notebooks }: { notebooks: NotebookListItem[] }) {
 
   if (notebooks.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center rounded-xl border border-dashed p-10 text-center">
-        <BookOpen className="mb-3 size-8 text-muted-foreground" />
-        <p className="font-medium">No notebooks yet</p>
-        <p className="text-sm text-muted-foreground">
-          Create your first notebook to start writing notes.
+      <div className="flex flex-col items-center justify-center rounded-md border border-border p-12 text-center bg-card">
+        <div className="size-9 rounded-md bg-muted text-muted-foreground flex items-center justify-center mb-3">
+          <BookOpen className="size-4" />
+        </div>
+        <p className="text-sm font-medium text-foreground">No notebooks yet</p>
+        <p className="text-xs text-muted-foreground mt-1 max-w-sm">
+          Create a notebook to organize your documentation, research, and notes.
         </p>
       </div>
     );
@@ -103,63 +99,66 @@ export function Notebooks({ notebooks }: { notebooks: NotebookListItem[] }) {
 
   return (
     <>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
         {notebooks.map((notebook) => (
           <div key={notebook.id} className="relative group">
             <Link
               href={`/dashboard/notebook/${notebook.id}`}
-              className="block h-full"
+              className="flex flex-col justify-between h-32 p-4 rounded-md border border-border bg-card hover:border-primary/50 transition-colors"
             >
-              <Card className="h-full transition-all duration-200 hover:shadow-md hover:border-primary/40 group-hover:bg-muted/40">
-                <CardHeader className="p-5">
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="size-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0">
-                      <BookOpen className="size-4" />
-                    </div>
-
-                    <DropdownMenu>
-                      <DropdownMenuTrigger
-                        asChild
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                        }}
-                      >
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="size-7 p-0 opacity-70 group-hover:opacity-100 hover:bg-muted"
-                        >
-                          <MoreVertical className="size-4" />
-                          <span className="sr-only">Actions</span>
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end" onClick={(e) => e.stopPropagation()}>
-                        <DropdownMenuItem onClick={(e) => handleOpenRename(notebook, e)}>
-                          <Pencil className="mr-2 size-3.5" />
-                          Rename
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem
-                          className="text-destructive focus:text-destructive"
-                          onClick={(e) => handleOpenDelete(notebook, e)}
-                        >
-                          <Trash2 className="mr-2 size-3.5" />
-                          Delete
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+              <div className="flex items-start justify-between gap-2">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="size-7 rounded-sm bg-muted text-primary flex items-center justify-center shrink-0">
+                    <BookOpen className="size-3.5" />
                   </div>
-
-                  <CardTitle className="truncate mt-3 text-base font-semibold">
+                  <h3 className="font-medium text-sm text-foreground truncate group-hover:text-primary transition-colors">
                     {notebook.name}
-                  </CardTitle>
-                  <CardDescription className="text-xs">
-                    {notebook.notes.length}{" "}
-                    {notebook.notes.length === 1 ? "note" : "notes"}
-                  </CardDescription>
-                </CardHeader>
-              </Card>
+                  </h3>
+                </div>
+
+                <DropdownMenu>
+                  <DropdownMenuTrigger
+                    asChild
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                    }}
+                  >
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="size-6 p-0 opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-foreground transition-opacity"
+                    >
+                      <MoreVertical className="size-3.5" />
+                      <span className="sr-only">Actions</span>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" onClick={(e) => e.stopPropagation()}>
+                    <DropdownMenuItem onClick={(e) => handleOpenRename(notebook, e)}>
+                      <Pencil className="mr-2 size-3.5" />
+                      Rename
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      className="text-destructive focus:text-destructive"
+                      onClick={(e) => handleOpenDelete(notebook, e)}
+                    >
+                      <Trash2 className="mr-2 size-3.5" />
+                      Delete
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+
+              <div className="flex items-center justify-between text-xs text-muted-foreground pt-3 border-t border-border/50">
+                <span className="px-1.5 py-0.5 rounded-xs bg-muted text-[11px] font-medium">
+                  {notebook.notes.length} {notebook.notes.length === 1 ? "note" : "notes"}
+                </span>
+
+                <span className="flex items-center gap-1 text-[11px] group-hover:text-foreground transition-colors">
+                  Open <ArrowRight className="size-3" />
+                </span>
+              </div>
             </Link>
           </div>
         ))}
@@ -170,16 +169,16 @@ export function Notebooks({ notebooks }: { notebooks: NotebookListItem[] }) {
         open={!!editingNotebook}
         onOpenChange={(open) => !open && setEditingNotebook(null)}
       >
-        <DialogContent>
+        <DialogContent className="rounded-md sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Rename Notebook</DialogTitle>
-            <DialogDescription>
+            <DialogTitle className="text-base font-semibold">Rename Notebook</DialogTitle>
+            <DialogDescription className="text-xs">
               Enter a new name for this notebook.
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-2">
-            <div className="space-y-2">
-              <Label htmlFor="rename-input">Notebook Name</Label>
+            <div className="space-y-1.5">
+              <Label htmlFor="rename-input" className="text-xs">Notebook Name</Label>
               <Input
                 id="rename-input"
                 value={renameValue}
@@ -195,16 +194,21 @@ export function Notebooks({ notebooks }: { notebooks: NotebookListItem[] }) {
           <DialogFooter>
             <Button
               variant="outline"
+              size="sm"
               onClick={() => setEditingNotebook(null)}
               disabled={isPending}
             >
               Cancel
             </Button>
             <Button
+              size="sm"
               onClick={handleConfirmRename}
               disabled={isPending || !renameValue.trim()}
             >
-              {isPending ? <Loader2 className="size-4 animate-spin" /> : "Save"}
+              {isPending ? (
+                <Loader2 className="size-3.5 animate-spin mr-1.5" />
+              ) : null}
+              Save Changes
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -215,16 +219,17 @@ export function Notebooks({ notebooks }: { notebooks: NotebookListItem[] }) {
         open={!!deletingNotebook}
         onOpenChange={(open) => !open && setDeletingNotebook(null)}
       >
-        <DialogContent>
+        <DialogContent className="rounded-md sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Delete Notebook</DialogTitle>
-            <DialogDescription>
-              Are you sure you want to delete &quot;{deletingNotebook?.name}&quot;? All notes inside it will also be permanently deleted.
+            <DialogTitle className="text-base font-semibold">Delete Notebook</DialogTitle>
+            <DialogDescription className="text-xs">
+              Are you sure you want to delete &quot;{deletingNotebook?.name}&quot;? All notes inside will be permanently deleted.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
             <Button
               variant="outline"
+              size="sm"
               onClick={() => setDeletingNotebook(null)}
               disabled={isPending}
             >
@@ -232,10 +237,14 @@ export function Notebooks({ notebooks }: { notebooks: NotebookListItem[] }) {
             </Button>
             <Button
               variant="destructive"
+              size="sm"
               onClick={handleConfirmDelete}
               disabled={isPending}
             >
-              {isPending ? <Loader2 className="size-4 animate-spin" /> : "Delete"}
+              {isPending ? (
+                <Loader2 className="size-3.5 animate-spin mr-1.5" />
+              ) : null}
+              Delete Notebook
             </Button>
           </DialogFooter>
         </DialogContent>
